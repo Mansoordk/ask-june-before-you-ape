@@ -41,7 +41,7 @@ Keep the analysis balanced, objective and beginner-friendly.
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "gpt-4.1",
+          model: process.env.JUNE_MODEL,
           messages: [
             {
               role: "user",
