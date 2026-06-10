@@ -8,28 +8,44 @@ export default async function handler(req, res) {
   try {
     const { project } = req.body;
 
-    const prompt = `
+   const prompt = `
 You are a professional crypto analyst.
 
-Analyze the crypto project: ${project}
+Analyze this crypto project:
 
-Provide:
+${project}
 
-# Overview
+Return ONLY valid JSON.
 
-# Core Use Case
+Do not include markdown.
+Do not include explanations outside JSON.
 
-# Key Strengths
+Use this exact structure:
 
-# Potential Risks
+{
+  "risk_score": 0,
+  "risk_level": "",
+  "overview": "",
+  "use_case": "",
+  "strengths": [],
+  "risks": [],
+  "competitors": [],
+  "outlook": "",
+  "verdict": ""
+}
 
-# Main Competitors
+Rules:
 
-# Long-Term Outlook
+- risk_score must be between 0 and 100
+- risk_level must be Low, Medium, or High
+- strengths must contain 3-5 points
+- risks must contain 3-5 points
+- competitors must contain 3-6 competitors
+- keep everything concise
+- beginner friendly
+- balanced and objective
 
-# Verdict
-
-Keep the analysis balanced, objective and beginner-friendly.
+Return JSON only.
 `;
 
     const response = await fetch(
