@@ -25,9 +25,60 @@ analyzeBtn.addEventListener("click", async () => {
 
     const data = await response.json();
 
-    result.innerHTML = data.analysis;
+    result.innerHTML = `
+      <div class="risk-card ${data.risk_level?.toLowerCase()}">
+        <h2>Risk Score</h2>
+        <h1>${data.risk_score}/100</h1>
+        <p>${data.risk_level} Risk</p>
+      </div>
+
+      <div class="card">
+        <h2>📋 Overview</h2>
+        <p>${data.overview}</p>
+      </div>
+
+      <div class="card">
+        <h2>⚙️ Use Case</h2>
+        <p>${data.use_case}</p>
+      </div>
+
+      <div class="card">
+        <h2>💪 Strengths</h2>
+        <ul>
+          ${data.strengths.map(item => `<li>${item}</li>`).join("")}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>⚠️ Risks</h2>
+        <ul>
+          ${data.risks.map(item => `<li>${item}</li>`).join("")}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>🥊 Competitors</h2>
+        <ul>
+          ${data.competitors.map(item => `<li>${item}</li>`).join("")}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>📈 Outlook</h2>
+        <p>${data.outlook}</p>
+      </div>
+
+      <div class="card">
+        <h2>🎯 Verdict</h2>
+        <p>${data.verdict}</p>
+      </div>
+    `;
   } catch (err) {
-    result.innerHTML = "Something went wrong.";
+    result.innerHTML = `
+      <div class="card">
+        Something went wrong.
+      </div>
+    `;
   }
 
   loading.classList.add("hidden");
