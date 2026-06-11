@@ -69,13 +69,19 @@ Return JSON only.
       }
     );
 
-    const data = await response.json();
+  const data = await response.json();
 
-    return res.status(200).json({
-      analysis:
-        data?.choices?.[0]?.message?.content ||
-        "No analysis returned.",
-    });
+const content =
+  data?.choices?.[0]?.message?.content;
+
+const cleaned = content
+  .replace(/```json/g, "")
+  .replace(/```/g, "")
+  .trim();
+
+return res.status(200).json(
+  JSON.parse(cleaned)
+);
   } catch (error) {
     console.error(error);
 
