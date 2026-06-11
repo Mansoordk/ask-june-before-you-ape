@@ -8,32 +8,53 @@
 </head>
 <body>
 
-  <div class="container">
+<div class="container">
+
+  <div class="hero">
+    <div class="badge">Powered by June AI</div>
+
     <h1>Ask June Before You Ape</h1>
+
     <p class="subtitle">
       Research first. Invest smarter.
     </p>
 
-    <div class="search-box">
-      <input
-        type="text"
-        id="projectInput"
-        placeholder="Enter a crypto project..."
-      />
-
-      <button id="analyzeBtn">
-        Analyze
-      </button>
-    </div>
-
-    <div id="loading" class="hidden">
-      Analyzing project...
-    </div>
-
-    <div id="result"></div>
+    <p class="description">
+      Get structured crypto research, risk scores, competitor analysis,
+      and long-term outlooks in seconds.
+    </p>
   </div>
 
-  <script src="script.js"></script>
+  <div class="search-box">
+    <input
+      id="projectInput"
+      type="text"
+      placeholder="Enter project name (e.g. Hyperliquid, Bitcoin, Monad)"
+    />
+
+    <button id="analyzeBtn">
+      Analyze with June
+    </button>
+  </div>
+
+  <div class="features">
+    <div>✓ Risk Score</div>
+    <div>✓ Competitor Analysis</div>
+    <div>✓ Long-Term Outlook</div>
+    <div>✓ Beginner Friendly</div>
+  </div>
+
+  <div id="loading" class="hidden">
+    Analyzing...
+  </div>
+
+  <div id="result"></div>
+
+  <footer>
+    Built by @mernsoordk • Powered by AskJune.AI
+  </footer>
+
+</div>
 
 </body>
 </html>
