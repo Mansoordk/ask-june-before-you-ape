@@ -30,6 +30,8 @@ Use this exact structure:
   "strengths": [],
   "risks": [],
   "competitors": [],
+  "bull_case": [],
+  "bear_case": [],
   "outlook": "",
   "verdict": ""
 }
@@ -41,6 +43,8 @@ Rules:
 - strengths must contain 3-5 points
 - risks must contain 3-5 points
 - competitors must contain 3-6 competitors
+- bull_case must contain 3-5 points
+- bear_case must contain 3-5 points
 - keep everything concise
 - beginner friendly
 - balanced and objective
