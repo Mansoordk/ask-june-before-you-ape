@@ -6,6 +6,12 @@ const loading = document.getElementById("loading");
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
 
+  document.querySelectorAll(".example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    projectInput.value = btn.textContent;
+  });
+});
+
   if (!project) {
     alert("Enter a project name");
     return;
