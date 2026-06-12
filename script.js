@@ -103,11 +103,6 @@ analyzeBtn.addEventListener("click", async () => {
         <button id="shareBtn">𝕏 Share on X</button>
       </div>
 
-      <div class="card">
-        <small>
-          Powered by June AI API • Built by @mernsoordk
-        </small>
-      </div>
     `;
 
     // Copy button
