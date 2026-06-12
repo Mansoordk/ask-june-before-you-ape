@@ -70,6 +70,24 @@ analyzeBtn.addEventListener("click", async () => {
       </div>
 
       <div class="card">
+  <h2>🟢 Bull Case</h2>
+  <ul>
+    ${(data.bull_case || [])
+      .map(item => `<li>${item}</li>`)
+      .join("")}
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🔴 Bear Case</h2>
+  <ul>
+    ${(data.bear_case || [])
+      .map(item => `<li>${item}</li>`)
+      .join("")}
+  </ul>
+</div>
+
+      <div class="card">
         <h2>📈 Outlook</h2>
         <p>${data.outlook || "No outlook available."}</p>
       </div>
