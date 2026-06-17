@@ -1,5 +1,3 @@
-Ga script.js dina nan kasaka abubuwan da kace nasaka don bangane hausarka ba, in yaso saini nasaka index.html din daka bani
-
 const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
