@@ -146,20 +146,7 @@ https://ask-june-before-you-ape.vercel.app`;
     );
   });
 
-  } catch (err) {
-    console.error(err);
-
-    result.innerHTML = `
-      <div class="card">
-        Something went wrong. Please try again.
-      </div>
-    `;
-  }
-
-  loading.classList.add("hidden");
-});
-
-// Download Image button
+    // Download Image button
 document
   .getElementById("downloadBtn")
   .addEventListener("click", async () => {
@@ -173,6 +160,19 @@ document
 
     link.href =
       canvas.toDataURL("image/png");
+
+  } catch (err) {
+    console.error(err);
+
+    result.innerHTML = `
+      <div class="card">
+        Something went wrong. Please try again.
+      </div>
+    `;
+  }
+
+  loading.classList.add("hidden");
+});
 
     link.click();
 });
