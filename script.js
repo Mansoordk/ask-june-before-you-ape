@@ -27,11 +27,20 @@ analyzeBtn.addEventListener("click", async () => {
     const data = await response.json();
 
     result.innerHTML = `
-      <div class="risk-card ${data.risk_level?.toLowerCase() || "medium"}">
-        <h2>Risk Score</h2>
-        <h1>${data.risk_score || "N/A"}/100</h1>
-        <p>${data.risk_level || "Unknown"} Risk</p>
-      </div>
+     <div class="risk-card ${data.risk_level?.toLowerCase()}">
+  <h2>Risk Score</h2>
+
+  <h1>${data.risk_score}/100</h1>
+
+  <div class="risk-bar">
+    <div
+      class="risk-fill ${data.risk_level?.toLowerCase()}"
+      style="width:${data.risk_score}%"
+    ></div>
+  </div>
+
+  <p>${data.risk_level} Risk</p>
+</div>
 
       <div class="card">
         <h2>📋 Overview</h2>
