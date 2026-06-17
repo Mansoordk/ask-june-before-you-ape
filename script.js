@@ -150,21 +150,6 @@ https://ask-june-before-you-ape.vercel.app`;
   } catch (err) {
     console.error(err);
 
-      // Download Image button
-document
-  .getElementById("downloadBtn")
-  .addEventListener("click", async () => {
-
-    const canvas = await html2canvas(result);
-
-    const link = document.createElement("a");
-
-    link.download =
-      `${project}-analysis.png`;
-
-    link.href =
-      canvas.toDataURL("image/png");
-
 
     result.innerHTML = `
       <div class="card">
