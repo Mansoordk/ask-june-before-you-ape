@@ -149,9 +149,3 @@ https://ask-june-before-you-ape.vercel.app`;
   loading.classList.add("hidden");
 });
 
-document.querySelectorAll(".example-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    projectInput.value = btn.textContent;
-    analyzeBtn.click();
-  });
-});
