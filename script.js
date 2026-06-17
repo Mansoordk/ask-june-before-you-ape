@@ -126,39 +126,8 @@ analyzeBtn.addEventListener("click", async () => {
         alert("Analysis copied successfully.");
       });
 
-   // Share button
-document
-  .getElementById("shareBtn")
-  .addEventListener("click", () => {
 
-    const tweet = `I analyzed ${project} using Ask June Before You Ape 🚀
-
-Risk Score: ${data.risk_score}/100
-Risk Level: ${data.risk_level}
-
-Powered by June AI
-
-https://ask-june-before-you-ape.vercel.app`;
-
-    window.open(
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`,
-      "_blank"
-    );
-  });
-
-  } catch (err) {
-    console.error(err);
-
-    result.innerHTML = `
-      <div class="card">
-        Something went wrong. Please try again.
-      </div>
-    `;
-  }
-
-  loading.classList.add("hidden");
-});
-// Download Image button
+    // Download Image button
 document
   .getElementById("downloadBtn")
   .addEventListener("click", async () => {
@@ -195,3 +164,36 @@ document
     }
 
 });
+   // Share button
+document
+  .getElementById("shareBtn")
+  .addEventListener("click", () => {
+
+    const tweet = `I analyzed ${project} using Ask June Before You Ape 🚀
+
+Risk Score: ${data.risk_score}/100
+Risk Level: ${data.risk_level}
+
+Powered by June AI
+
+https://ask-june-before-you-ape.vercel.app`;
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`,
+      "_blank"
+    );
+  });
+
+  } catch (err) {
+    console.error(err);
+
+    result.innerHTML = `
+      <div class="card">
+        Something went wrong. Please try again.
+      </div>
+    `;
+  }
+
+  loading.classList.add("hidden");
+});
+
