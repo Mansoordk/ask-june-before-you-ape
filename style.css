@@ -256,3 +256,15 @@ footer {
 
   transition: width 1s ease;
 }
+
+.risk-fill.low {
+  background: #22c55e;
+}
+
+.risk-fill.medium {
+  background: #f59e0b;
+}
+
+.risk-fill.high {
+  background: #ef4444;
+}
