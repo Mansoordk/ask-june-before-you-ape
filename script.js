@@ -165,15 +165,35 @@ document
   .getElementById("downloadBtn")
   .addEventListener("click", async () => {
 
-    const canvas = await html2canvas(result);
+    try {
 
-    const link = document.createElement("a");
+      const canvas = await html2canvas(
+        document.getElementById("result")
+      );
 
-    link.download =
-      `${project}-analysis.png`;
+      const link = document.createElement("a");
 
-    link.href =
-      canvas.toDataURL("image/png");
+      link.href = canvas.toDataURL("image/png");
 
-    link.click();
+      link.download =
+        `${project}-analysis.png`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+    } catch (error) {
+
+      console.error(
+        "Download Error:",
+        error
+      );
+
+      alert(
+        "Download failed. Check console."
+      );
+    }
+
 });
