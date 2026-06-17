@@ -107,10 +107,11 @@ analyzeBtn.addEventListener("click", async () => {
         <p>${data.verdict || "No verdict available."}</p>
       </div>
 
-      <div class="card">
-        <button id="copyBtn">📋 Copy Analysis</button>
-        <button id="shareBtn">𝕏 Share on X</button>
-      </div>
+    <div class="card">
+  <button id="copyBtn">📋 Copy Analysis</button>
+  <button id="shareBtn">𝕏 Share on X</button>
+  <button id="downloadBtn">📸 Download Image</button>
+</div>
 
     `;
 
@@ -158,3 +159,20 @@ https://ask-june-before-you-ape.vercel.app`;
   loading.classList.add("hidden");
 });
 
+// Download Image button
+document
+  .getElementById("downloadBtn")
+  .addEventListener("click", async () => {
+
+    const canvas = await html2canvas(result);
+
+    const link = document.createElement("a");
+
+    link.download =
+      `${project}-analysis.png`;
+
+    link.href =
+      canvas.toDataURL("image/png");
+
+    link.click();
+});
