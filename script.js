@@ -1,3 +1,5 @@
+Ga script.js dina nan kasaka abubuwan da kace nasaka don bangane hausarka ba, in yaso saini nasaka index.html din daka bani
+
 const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
@@ -107,11 +109,10 @@ analyzeBtn.addEventListener("click", async () => {
         <p>${data.verdict || "No verdict available."}</p>
       </div>
 
-    <div class="card">
-  <button id="copyBtn">📋 Copy Analysis</button>
-  <button id="shareBtn">𝕏 Share on X</button>
-  <button id="downloadBtn">📸 Download Image</button>
-</div>
+      <div class="card">
+        <button id="copyBtn">📋 Copy Analysis</button>
+        <button id="shareBtn">𝕏 Share on X</button>
+      </div>
 
     `;
 
@@ -146,10 +147,8 @@ https://ask-june-before-you-ape.vercel.app`;
     );
   });
 
-  
   } catch (err) {
     console.error(err);
-
 
     result.innerHTML = `
       <div class="card">
@@ -159,7 +158,4 @@ https://ask-june-before-you-ape.vercel.app`;
   }
 
   loading.classList.add("hidden");
-});
-
-    link.click();
 });
