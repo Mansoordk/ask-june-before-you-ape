@@ -236,29 +236,3 @@ footer {
   margin-top: 20px;
   color: #60a5fa;
 }
-
-.trending {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.trending span {
-  color: #94a3b8;
-  margin-right: 10px;
-}
-
-.example-btn {
-  margin: 5px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.example-btn:hover {
-  background: rgba(59,130,246,0.2);
-  border-color: #3b82f6;
-}
