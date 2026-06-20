@@ -32,6 +32,7 @@ Use this exact structure:
   "competitors": [],
   "bull_case": [],
   "bear_case": [],
+  "investment_thesis": ""
   "outlook": "",
   "verdict": ""
 }
@@ -45,6 +46,8 @@ Rules:
 - competitors must contain 3-6 competitors
 - bull_case must contain 3-5 points
 - bear_case must contain 3-5 points
+- investment_thesis must be 1-2 concise sentences
+- explain the main reason an investor may be bullish on the project
 - keep everything concise
 - beginner friendly
 - balanced and objective
