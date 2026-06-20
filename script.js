@@ -97,6 +97,11 @@ analyzeBtn.addEventListener("click", async () => {
   </ul>
 </div>
 
+<div class="card">
+  <h2>🎯 Investment Thesis</h2>
+  <p>${data.investment_thesis || "No investment thesis available."}</p>
+</div>
+
       <div class="card">
         <h2>📈 Outlook</h2>
         <p>${data.outlook || "No outlook available."}</p>
