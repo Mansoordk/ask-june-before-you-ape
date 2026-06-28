@@ -202,3 +202,34 @@ https://ask-june-before-you-ape.vercel.app`;
   loading.classList.add("hidden");
 });
 
+
+async function loadTrending() {
+  try {
+    const response = await fetch("/api/trending");
+    const projects = await response.json();
+
+    const container =
+      document.getElementById("trendingProjects");
+
+    container.innerHTML = "";
+
+    projects.forEach(project => {
+      const btn =
+        document.createElement("button");
+
+      btn.className = "example-btn";
+      btn.textContent = project;
+
+      btn.addEventListener("click", () => {
+        projectInput.value = project;
+      });
+
+      container.appendChild(btn);
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+loadTrending();
