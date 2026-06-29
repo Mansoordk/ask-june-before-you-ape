@@ -219,11 +219,32 @@ async function loadTrending() {
 
   btn.className = "example-btn";
 
-  btn.innerHTML = `
-    <span class="coin-symbol">${project.symbol}</span>
-    <span class="coin-name">${project.name}</span>
-    <span class="coin-rank">#${project.rank}</span>
-  `;
+const positive = project.change >= 0;
+
+btn.innerHTML = `
+  <div class="coin-card">
+
+    <div class="coin-top">
+      <span class="coin-symbol">${project.symbol}</span>
+      <span class="coin-rank">#${project.rank ?? "-"}</span>
+    </div>
+
+    <div class="coin-name">
+      ${project.name}
+    </div>
+
+    <div class="coin-price">
+      ${project.price}
+    </div>
+
+    <div class="${positive ? "coin-green" : "coin-red"}">
+      ${project.change == null
+        ? "N/A"
+        : `${positive ? "▲" : "▼"} ${Math.abs(project.change).toFixed(2)}%`}
+    </div>
+
+  </div>
+`;
 
   btn.addEventListener("click", () => {
     projectInput.value = project.name;
