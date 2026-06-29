@@ -11,37 +11,30 @@ const coins = data.coins
     name: item.name,
     symbol: item.symbol,
     rank: item.market_cap_rank,
+    price: item.data?.price || "N/A",
+    change: item.data?.price_change_percentage_24h?.usd ?? null
   }));
 
 return res.status(200).json(coins);
 
+return res.status(200).json(coins);
+
   } catch (err) {
-  return res.status(200).json([
+ return res.status(200).json([
   {
     name: "Bitcoin",
     symbol: "BTC",
-    rank: 1
+    rank: 1,
+    price: "$108,000",
+    change: 2.5
   },
   {
     name: "Ethereum",
     symbol: "ETH",
-    rank: 2
-  },
-  {
-    name: "Solana",
-    symbol: "SOL",
-    rank: 6
-  },
-  {
-    name: "Hyperliquid",
-    symbol: "HYPE",
-    rank: 11
-  },
-  {
-    name: "Monad",
-    symbol: "MON",
-    rank: "-"
+    rank: 2,
+    price: "$2,700",
+    change: -1.2
   }
 ]);
-  }
 }
+
