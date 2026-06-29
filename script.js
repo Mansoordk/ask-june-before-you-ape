@@ -213,19 +213,25 @@ async function loadTrending() {
 
     container.innerHTML = "";
 
-    projects.forEach(project => {
-      const btn =
-        document.createElement("button");
+   projects.forEach(project => {
 
-      btn.className = "example-btn";
-      btn.textContent = project;
+  const btn = document.createElement("button");
 
-      btn.addEventListener("click", () => {
-        projectInput.value = project;
-      });
+  btn.className = "example-btn";
 
-      container.appendChild(btn);
-    });
+  btn.innerHTML = `
+    <span class="coin-symbol">${project.symbol}</span>
+    <span class="coin-name">${project.name}</span>
+    <span class="coin-rank">#${project.rank}</span>
+  `;
+
+  btn.addEventListener("click", () => {
+    projectInput.value = project.name;
+  });
+
+  container.appendChild(btn);
+
+});
 
   } catch (err) {
     console.error(err);
