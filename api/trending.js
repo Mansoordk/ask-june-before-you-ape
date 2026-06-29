@@ -17,7 +17,6 @@ const coins = data.coins
 
 return res.status(200).json(coins);
 
-return res.status(200).json(coins);
 
   } catch (err) {
  return res.status(200).json([
