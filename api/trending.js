@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     console.log(JSON.stringify(data, null, 2));
 
     const coins = data.coins
-      .slice(0, 6)
+      .slice(0, 5)
       .map(({ item }) => ({
         name: item.name,
         symbol: item.symbol,
