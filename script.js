@@ -221,29 +221,51 @@ async function loadTrending() {
 
 const positive = project.change >= 0;
 
+// Format the price nicely
+let price = "N/A";
+
+if (project.price !== "N/A") {
+  const value = Number(project.price);
+
+  if (!isNaN(value)) {
+    if (value >= 1) {
+      price = value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    } else {
+      price = `$${value.toFixed(4)}`;
+    }
+  }
+}
+
 btn.innerHTML = `
-  <div class="coin-card">
+<div class="coin-card">
 
-    <div class="coin-top">
-      <span class="coin-symbol">${project.symbol}</span>
-      <span class="coin-rank">#${project.rank ?? "-"}</span>
-    </div>
-
-    <div class="coin-name">
-      ${project.name}
-    </div>
-
-    <div class="coin-price">
-      ${project.price}
-    </div>
-
-    <div class="${positive ? "coin-green" : "coin-red"}">
-      ${project.change == null
-        ? "N/A"
-        : `${positive ? "▲" : "▼"} ${Math.abs(project.change).toFixed(2)}%`}
-    </div>
-
+  <div class="coin-top">
+    <span class="coin-symbol">${project.symbol}</span>
+    <span class="coin-rank">#${project.rank ?? "-"}</span>
   </div>
+
+  <div class="coin-name">
+    ${project.name}
+  </div>
+
+  <div class="coin-price">
+    ${price}
+  </div>
+
+  <div class="${positive ? "coin-green" : "coin-red"}">
+    ${
+      project.change == null
+        ? "N/A"
+        : `${positive ? "▲" : "▼"} ${Math.abs(project.change).toFixed(2)}%`
+    }
+  </div>
+
+</div>
 `;
 
   btn.addEventListener("click", () => {
