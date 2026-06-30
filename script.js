@@ -282,3 +282,9 @@ btn.innerHTML = `
 }
 
 loadTrending();
+
+projectInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    analyzeBtn.click();
+  }
+});
