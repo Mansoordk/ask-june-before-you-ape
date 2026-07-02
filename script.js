@@ -12,8 +12,11 @@ analyzeBtn.addEventListener("click", async () => {
     return;
   }
 
-  loading.classList.remove("hidden");
-  result.innerHTML = "";
+analyzeBtn.disabled = true;
+analyzeBtn.textContent = "Analyzing...";
+
+loading.classList.remove("hidden");
+result.innerHTML = "";
 
   try {
     const response = await fetch("/api/analyze", {
@@ -200,6 +203,9 @@ https://ask-june-before-you-ape.vercel.app`;
   }
 
   loading.classList.add("hidden");
+
+analyzeBtn.disabled = false;
+analyzeBtn.textContent = "Analyze with June";
 });
 
 
@@ -268,9 +274,12 @@ btn.innerHTML = `
 </div>
 `;
 
-  btn.addEventListener("click", () => {
-    projectInput.value = project.name;
-  });
+btn.addEventListener("click", () => {
+  projectInput.value = project.name;
+
+  // Automatically analyze the selected project
+  analyzeBtn.click();
+});
 
   container.appendChild(btn);
 
