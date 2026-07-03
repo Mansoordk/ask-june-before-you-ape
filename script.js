@@ -89,6 +89,71 @@ function renderAnalysis(data) {
 }
 
 
+function renderTokenomics(token) {
+
+  if (!token) return "";
+
+  return `
+    <div class="card">
+
+      <h2>🪙 Tokenomics Snapshot</h2>
+
+      <div class="tokenomics-grid">
+
+        <div class="token-box">
+          <span>💰 Price</span>
+          <strong>${token.price}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🏆 Market Cap</span>
+          <strong>${token.marketCap}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📈 FDV</span>
+          <strong>${token.fdv}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🔄 24h Volume</span>
+          <strong>${token.volume}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🪙 Circulating Supply</span>
+          <strong>${token.supply}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🥇 Rank</span>
+          <strong>#${token.rank}</strong>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function formatNumber(value) {
+
+  if (value == null) return "N/A";
+
+  return Number(value).toLocaleString("en-US");
+
+}
+
+function formatMoney(value) {
+
+  if (value == null) return "N/A";
+
+  return "$" + Number(value).toLocaleString("en-US");
+
+}
+
+
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
 
@@ -115,7 +180,38 @@ result.innerHTML = "";
 
     const data = await response.json();
 
-    result.innerHTML = renderAnalysis(data);
+    let tokenomics = null;
+
+try {
+
+  const tokenResponse = await fetch(
+    `/api/tokenomics?project=${encodeURIComponent(project)}`
+  );
+
+  if (tokenResponse.ok) {
+
+    const token = await tokenResponse.json();
+
+    tokenomics = {
+      price: formatMoney(token.price),
+      marketCap: formatMoney(token.market_cap),
+      fdv: formatMoney(token.fdv),
+      volume: formatMoney(token.volume_24h),
+      supply: formatNumber(token.circulating_supply),
+      rank: token.rank
+    };
+
+  }
+
+} catch (err) {
+
+  console.error("Tokenomics Error:", err);
+
+}
+
+   result.innerHTML =
+  renderAnalysis(data) +
+  renderTokenomics(tokenomics);
 
     // Copy button
     document
