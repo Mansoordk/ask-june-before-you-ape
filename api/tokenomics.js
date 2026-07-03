@@ -30,17 +30,29 @@ export default async function handler(req, res) {
 
     const coin = await coinRes.json();
 
-    res.status(200).json({
-      price: coin.market_data.current_price.usd,
-      market_cap: coin.market_data.market_cap.usd,
-      fdv: coin.market_data.fully_diluted_valuation.usd,
-      volume: coin.market_data.total_volume.usd,
-      circulating_supply:
-        coin.market_data.circulating_supply,
-      max_supply:
-        coin.market_data.max_supply,
-      rank: coin.market_cap_rank,
-    });
+res.status(200).json({
+  price: coin.market_data.current_price?.usd ?? null,
+
+  market_cap: coin.market_data.market_cap?.usd ?? null,
+
+  fdv:
+    coin.market_data.fully_diluted_valuation?.usd ??
+    coin.market_data.market_cap?.usd ??
+    null,
+
+  volume:
+    coin.market_data.total_volume?.usd ??
+    coin.market_data.total_volume?.btc ??
+    null,
+
+  circulating_supply:
+    coin.market_data.circulating_supply ?? null,
+
+  max_supply:
+    coin.market_data.max_supply ?? null,
+
+  rank: coin.market_cap_rank ?? null,
+});
 
   } catch (err) {
 
