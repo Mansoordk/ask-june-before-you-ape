@@ -143,7 +143,19 @@ function formatNumber(value) {
 
   if (value == null) return "N/A";
 
-  return Number(value).toLocaleString("en-US");
+  const num = Number(value);
+
+  if (num >= 1e12) return (num / 1e12).toFixed(2) + "T";
+
+  if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
+
+  if (num >= 1e6) return (num / 1e6).toFixed(2) + "M";
+
+  if (num >= 1e3) return (num / 1e3).toFixed(2) + "K";
+
+  return num.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 
 }
 
@@ -151,7 +163,19 @@ function formatMoney(value) {
 
   if (value == null) return "N/A";
 
-  return "$" + Number(value).toLocaleString("en-US");
+  const num = Number(value);
+
+  if (num >= 1e12) return "$" + (num / 1e12).toFixed(2) + "T";
+
+  if (num >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
+
+  if (num >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
+
+  if (num >= 1e3) return "$" + (num / 1e3).toFixed(2) + "K";
+
+  return "$" + num.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 
 }
 
