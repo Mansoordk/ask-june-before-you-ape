@@ -3,7 +3,7 @@ const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
 const loading = document.getElementById("loading");
 
-function renderAnalysis(data) {
+function renderAnalysis(data, tokenomics) {
   return `
     <div class="risk-card ${data.risk_level?.toLowerCase()}">
       <h2>Risk Score</h2>
@@ -19,6 +19,8 @@ function renderAnalysis(data) {
 
       <p>${data.risk_level} Risk</p>
     </div>
+
+    ${renderTokenomics(tokenomics)}
 
     <div class="card">
       <h2>📋 Overview</h2>
@@ -94,45 +96,45 @@ function renderTokenomics(token) {
   if (!token) return "";
 
   return `
-    <div class="card">
+  <div class="card">
 
-      <h2>🪙 Tokenomics Snapshot</h2>
+    <h2>🪙 Tokenomics Snapshot</h2>
 
-      <div class="tokenomics-grid">
+    <div class="tokenomics-grid">
 
-        <div class="token-box">
-          <span>💰 Price</span>
-          <strong>${token.price}</strong>
-        </div>
+      <div class="token-box">
+        <span>💰 Price</span>
+        <strong>${token.price}</strong>
+      </div>
 
-        <div class="token-box">
-          <span>🏆 Market Cap</span>
-          <strong>${token.marketCap}</strong>
-        </div>
+      <div class="token-box">
+        <span>🏆 Market Cap</span>
+        <strong>${token.marketCap}</strong>
+      </div>
 
-        <div class="token-box">
-          <span>📈 FDV</span>
-          <strong>${token.fdv}</strong>
-        </div>
+      <div class="token-box">
+        <span>📈 FDV</span>
+        <strong>${token.fdv}</strong>
+      </div>
 
-        <div class="token-box">
-          <span>🔄 24h Volume</span>
-          <strong>${token.volume}</strong>
-        </div>
+      <div class="token-box">
+        <span>🔄 24h Volume</span>
+        <strong>${token.volume}</strong>
+      </div>
 
-        <div class="token-box">
-          <span>🪙 Circulating Supply</span>
-          <strong>${token.supply}</strong>
-        </div>
+      <div class="token-box">
+        <span>🪙 Circulating</span>
+        <strong>${token.supply}</strong>
+      </div>
 
-        <div class="token-box">
-          <span>🥇 Rank</span>
-          <strong>#${token.rank}</strong>
-        </div>
-
+      <div class="token-box">
+        <span>🥇 Rank</span>
+        <strong>#${token.rank}</strong>
       </div>
 
     </div>
+
+  </div>
   `;
 }
 
@@ -209,9 +211,8 @@ try {
 
 }
 
-   result.innerHTML =
-  renderAnalysis(data) +
-  renderTokenomics(tokenomics);
+ result.innerHTML =
+  renderAnalysis(data, tokenomics);
 
     // Copy button
     document
