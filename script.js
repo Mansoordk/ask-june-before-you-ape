@@ -218,14 +218,14 @@ try {
 
     const token = await tokenResponse.json();
 
-    tokenomics = {
-      price: formatMoney(token.price),
-      marketCap: formatMoney(token.market_cap),
-      fdv: formatMoney(token.fdv),
-      volume: formatMoney(token.volume_24h),
-      supply: formatNumber(token.circulating_supply),
-      rank: token.rank
-    };
+   tokenomics = {
+  price: formatMoney(token.price),
+  marketCap: formatMoney(token.market_cap),
+  fdv: formatMoney(token.fdv),
+  volume: formatMoney(token.volume),
+  supply: formatNumber(token.circulating_supply),
+  rank: token.rank
+};
 
   }
 
