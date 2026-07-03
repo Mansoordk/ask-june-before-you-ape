@@ -33,14 +33,6 @@ Use this exact structure:
   "bull_case": [],
   "bear_case": [],
   "investment_thesis": "",
-  "tokenomics": {
-    "ticker": "",
-    "market_cap": "",
-    "fdv": "",
-    "circulating_supply": "",
-    "max_supply": "",
-    "category": ""
-  },
   "outlook": "",
   "verdict": ""
 }
@@ -59,17 +51,6 @@ Rules:
 - keep everything concise
 - beginner friendly
 - balanced and objective
-
-For tokenomics:
-
-- ticker = project symbol if known
-- market_cap = estimated market cap if publicly known
-- fdv = estimated fully diluted valuation if known
-- circulating_supply = estimated circulating supply
-- max_supply = maximum supply if known
-- category = Layer1, AI, DeFi, Meme, Gaming, Infrastructure, etc.
-
-If unknown return "Unknown".
 
 Return JSON only.
 `;
