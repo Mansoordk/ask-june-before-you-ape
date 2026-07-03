@@ -105,43 +105,6 @@ result.innerHTML = "";
   <p>${data.investment_thesis || "No investment thesis available."}</p>
 </div>
 
-<div class="card">
-  <h2>🪙 Tokenomics Snapshot</h2>
-
-  <table class="tokenomics-table">
-
-    <tr>
-      <td>Ticker</td>
-      <td>${data.tokenomics?.ticker || "Unknown"}</td>
-    </tr>
-
-    <tr>
-      <td>Category</td>
-      <td>${data.tokenomics?.category || "Unknown"}</td>
-    </tr>
-
-    <tr>
-      <td>Market Cap</td>
-      <td>${data.tokenomics?.market_cap || "Unknown"}</td>
-    </tr>
-
-    <tr>
-      <td>FDV</td>
-      <td>${data.tokenomics?.fdv || "Unknown"}</td>
-    </tr>
-
-    <tr>
-      <td>Circulating Supply</td>
-      <td>${data.tokenomics?.circulating_supply || "Unknown"}</td>
-    </tr>
-
-    <tr>
-      <td>Max Supply</td>
-      <td>${data.tokenomics?.max_supply || "Unknown"}</td>
-    </tr>
-
-  </table>
-</div>
 
       <div class="card">
         <h2>📈 Outlook</h2>
