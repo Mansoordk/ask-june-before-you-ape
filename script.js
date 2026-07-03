@@ -3,6 +3,51 @@ const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
 const loading = document.getElementById("loading");
 
+
+analyzeBtn.addEventListener("click", analyzeProject);
+
+async function analyzeProject() {
+
+  const project = projectInput.value.trim();
+
+  if (!project) {
+    alert("Enter a project name");
+    return;
+  }
+
+  loading.classList.remove("hidden");
+  result.innerHTML = "";
+
+  try {
+
+    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ project }),
+    });
+
+    const data = await response.json();
+
+    renderAnalysis(project, data);
+
+  } catch (err) {
+
+    console.error(err);
+
+    result.innerHTML = `
+      <div class="card">
+        Something went wrong. Please try again.
+      </div>
+    `;
+
+  }
+
+  loading.classList.add("hidden");
+
+}
+
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
 
