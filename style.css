@@ -374,3 +374,28 @@ footer {
   }
 
 }
+
+
+.tokenomics-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.tokenomics-table tr{
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.tokenomics-table td{
+  padding:12px 8px;
+}
+
+.tokenomics-table td:first-child{
+  color:#94a3b8;
+  font-weight:600;
+}
+
+.tokenomics-table td:last-child{
+  text-align:right;
+  font-weight:700;
+  color:#fff;
+}
