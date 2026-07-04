@@ -305,16 +305,29 @@ try {
   );
 
   if (tokenResponse.ok) {
+const token = await tokenResponse.json();
 
-    const token = await tokenResponse.json();
-
-   tokenomics = {
+tokenomics = {
+  // Tokenomics
   price: formatMoney(token.price),
   marketCap: formatMoney(token.market_cap),
   fdv: formatMoney(token.fdv),
   volume: formatMoney(token.volume),
   supply: formatNumber(token.circulating_supply),
-  rank: token.rank
+  rank: token.rank,
+
+  // Project Information
+  website: token.website,
+  twitter: token.twitter,
+  github: token.github,
+  telegram: token.telegram,
+  category: token.category,
+  genesisDate: token.genesis_date,
+
+  // Market Statistics
+  ath: formatMoney(token.ath),
+  atl: formatMoney(token.atl),
+  athChange: token.ath_change
 };
 
   }
