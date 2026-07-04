@@ -20,7 +20,9 @@ function renderAnalysis(data, tokenomics) {
       <p>${data.risk_level} Risk</p>
     </div>
 
-    ${renderTokenomics(tokenomics)}
+   ${renderTokenomics(tokenomics)}
+
+   ${renderChart()}
 
     <div class="card">
       <h2>📋 Overview</h2>
@@ -139,6 +141,20 @@ function renderTokenomics(token) {
 }
 
 
+function renderChart() {
+
+  return `
+    <div class="card">
+      <h2>📈 7-Day Price Chart</h2>
+
+      <canvas id="priceChart"></canvas>
+
+    </div>
+  `;
+
+}
+
+
 function formatNumber(value) {
 
   if (value == null) return "N/A";
@@ -237,6 +253,100 @@ try {
 
  result.innerHTML =
   renderAnalysis(data, tokenomics);
+
+    try {
+
+  const chartResponse = await fetch(
+    `/api/chart?project=${encodeURIComponent(project)}`
+  );
+
+  if (chartResponse.ok) {
+
+    const prices = await chartResponse.json();
+
+    const labels = prices.map((_, i) => i + 1);
+
+    const values = prices.map(p => p[1]);
+
+    new Chart(
+      document.getElementById("priceChart"),
+      {
+        type: "line",
+
+        data: {
+
+          labels,
+
+          datasets: [
+
+            {
+
+              label: "Price (USD)",
+
+              data: values,
+
+              borderColor: "#3b82f6",
+
+              borderWidth: 2,
+
+              fill: false,
+
+              tension: .35,
+
+              pointRadius: 0
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          plugins: {
+
+            legend: {
+
+              display: false
+
+            }
+
+          },
+
+          scales: {
+
+            x: {
+
+              display: false
+
+            },
+
+            y: {
+
+              ticks: {
+
+                color: "#cbd5e1"
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+} catch (err) {
+
+  console.error("Chart Error:", err);
+
+}
 
     // Copy button
     document
