@@ -20,9 +20,11 @@ function renderAnalysis(data, tokenomics) {
       <p>${data.risk_level} Risk</p>
     </div>
 
-   ${renderTokenomics(tokenomics)}
+  ${renderTokenomics(tokenomics)}
 
-   ${renderChart()}
+${renderProjectInfo(tokenomics)}
+
+${renderChart()}
 
     <div class="card">
       <h2>📋 Overview</h2>
@@ -137,6 +139,78 @@ function renderTokenomics(token) {
     </div>
 
   </div>
+  `;
+}
+
+
+function renderProjectInfo(token) {
+
+  if (!token) return "";
+
+  return `
+    <div class="card">
+
+      <h2>🌐 Project Information</h2>
+
+      <div class="tokenomics-grid">
+
+        <div class="token-box">
+          <span>🏷️ Category</span>
+          <strong>${token.category || "N/A"}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📅 Launch Date</span>
+          <strong>${token.genesisDate || "N/A"}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🌍 Website</span>
+          <strong>
+            ${
+              token.website
+                ? `<a href="${token.website}" target="_blank">Open ↗</a>`
+                : "N/A"
+            }
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>𝕏 Twitter</span>
+          <strong>
+            ${
+              token.twitter
+                ? `<a href="${token.twitter}" target="_blank">Open ↗</a>`
+                : "N/A"
+            }
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>💻 GitHub</span>
+          <strong>
+            ${
+              token.github
+                ? `<a href="${token.github}" target="_blank">Open ↗</a>`
+                : "N/A"
+            }
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>💬 Telegram</span>
+          <strong>
+            ${
+              token.telegram
+                ? `<a href="${token.telegram}" target="_blank">Open ↗</a>`
+                : "N/A"
+            }
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
   `;
 }
 
