@@ -31,36 +31,36 @@ export default async function handler(req, res) {
     const coin = await coinRes.json();
 
 res.status(200).json({
-  price: coin.market_data.current_price?.usd ?? null,
+  // Tokenomics
+  price: coin.market_data.current_price.usd,
+  market_cap: coin.market_data.market_cap.usd,
+  fdv: coin.market_data.fully_diluted_valuation.usd,
+  volume: coin.market_data.total_volume.usd,
+  circulating_supply: coin.market_data.circulating_supply,
+  max_supply: coin.market_data.max_supply,
+  total_supply: coin.market_data.total_supply,
+  rank: coin.market_cap_rank,
 
-  market_cap: coin.market_data.market_cap?.usd ?? null,
+  // Market Stats
+  ath: coin.market_data.ath.usd,
+  ath_change: coin.market_data.ath_change_percentage.usd,
+  atl: coin.market_data.atl.usd,
 
-  fdv:
-    coin.market_data.fully_diluted_valuation?.usd ??
-    coin.market_data.market_cap?.usd ??
-    null,
+  // Links
+  website: coin.links.homepage[0],
+  twitter: coin.links.twitter_screen_name
+    ? `https://x.com/${coin.links.twitter_screen_name}`
+    : null,
+  github:
+    coin.links.repos_url.github[0] || null,
+  telegram:
+    coin.links.telegram_channel_identifier
+      ? `https://t.me/${coin.links.telegram_channel_identifier}`
+      : null,
 
-  volume:
-    coin.market_data.total_volume?.usd ??
-    coin.market_data.total_volume?.btc ??
-    null,
-
-  circulating_supply:
-    coin.market_data.circulating_supply ?? null,
-
-  max_supply:
-    coin.market_data.max_supply ?? null,
-
-  rank: coin.market_cap_rank ?? null,
+  // Info
+  category: coin.categories?.[0] || "N/A",
+  genesis_date: coin.genesis_date,
 });
-
-  } catch (err) {
-
-    console.error(err);
-
-    res.status(500).json({
-      error: "Failed to fetch tokenomics",
-    });
-
   }
 }
