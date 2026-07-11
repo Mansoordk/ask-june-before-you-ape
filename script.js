@@ -2,6 +2,11 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
 const loading = document.getElementById("loading");
+const portfolioModal = document.getElementById("portfolioModal");
+const portfolioBtn = document.getElementById("portfolioBtn");
+const portfolioInput = document.getElementById("portfolioInput");
+const portfolioResult = document.getElementById("portfolioResult");
+const closePortfolio = document.getElementById("closePortfolio");
 
 function renderAnalysis(data, tokenomics) {
   return `
@@ -687,7 +692,7 @@ https://ask-june-before-you-ape.vercel.app`;
   .getElementById("openPortfolioBtn")
   ?.addEventListener("click", () => {
 
-    alert("🚀 AI Portfolio Analyzer is coming next!");
+    portfolioModal.classList.remove("hidden");
 
   });
 
@@ -795,4 +800,21 @@ projectInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     analyzeBtn.click();
   }
+});
+
+
+closePortfolio.addEventListener("click", () => {
+
+  portfolioModal.classList.add("hidden");
+
+});
+
+window.addEventListener("click", (e) => {
+
+  if (e.target === portfolioModal) {
+
+    portfolioModal.classList.add("hidden");
+
+  }
+
 });
