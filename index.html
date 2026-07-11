@@ -24,17 +24,23 @@
     </p>
   </div>
 
-  <div class="search-box">
-    <input
-      id="projectInput"
-      type="text"
-      placeholder="Enter project name (e.g. Hyperliquid, Bitcoin, Monad)"
-    />
-   
-    <button id="analyzeBtn">
-      Analyze with June
-    </button>
-  </div>
+<div class="search-box">
+
+  <input
+    id="projectInput"
+    type="text"
+    placeholder="Enter project name (e.g. Hyperliquid, Bitcoin, Monad)"
+  />
+
+  <button id="analyzeBtn">
+    Analyze with June
+  </button>
+
+  <button id="openPortfolio">
+    📊 Portfolio Analyzer
+  </button>
+
+</div>
 
  <div class="trending">
   <span class="trending-title">🔥 Trending</span>
@@ -58,6 +64,34 @@
   <footer>
     Built by @mernsoordk • Powered by June AI
   </footer>
+
+</div>
+
+  <div id="portfolioModal" class="modal hidden">
+
+  <div class="modal-content">
+
+    <span id="closePortfolio" class="close-btn">&times;</span>
+
+    <h2>🤖 AI Portfolio Analyzer</h2>
+
+    <p>
+      Enter your portfolio allocations.
+    </p>
+
+    <textarea
+      id="portfolioInput"
+      rows="8"
+      placeholder="BTC 40%; ETH 30%; SOL 20%; SUI 10%">
+    </textarea>
+
+    <button id="portfolioBtn">
+      Analyze Portfolio
+    </button>
+
+    <div id="portfolioResult"></div>
+
+  </div>
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
