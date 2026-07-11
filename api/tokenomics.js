@@ -41,6 +41,15 @@ export default async function handler(req, res) {
       max_supply: coin.market_data.max_supply,
       rank: coin.market_cap_rank,
 
+      // Market performance
+      ath: coin.market_data.ath.usd,
+      ath_change: coin.market_data.ath_change_percentage.usd,
+      ath_date: coin.market_data.ath_date.usd,
+
+      atl: coin.market_data.atl.usd,
+      atl_change: coin.market_data.atl_change_percentage.usd,
+      atl_date: coin.market_data.atl_date.usd,
+
       // Market Stats
       ath: coin.market_data.ath.usd,
       ath_change: coin.market_data.ath_change_percentage.usd,
