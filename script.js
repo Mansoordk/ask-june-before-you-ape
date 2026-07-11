@@ -26,6 +26,8 @@ ${renderProjectInfo(tokenomics)}
 
 ${renderMarketPerformance(tokenomics)}
 
+${renderPricePerformance(tokenomics)}
+
 ${renderChart()}
 
     <div class="card">
