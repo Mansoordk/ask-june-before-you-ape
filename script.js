@@ -1,3 +1,6 @@
+const portfolioBtn = document.getElementById("portfolioBtn");
+const portfolioInput = document.getElementById("portfolioInput");
+const portfolioResult = document.getElementById("portfolioResult");
 const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
