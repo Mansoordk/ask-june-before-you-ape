@@ -324,10 +324,14 @@ tokenomics = {
   category: token.category,
   genesisDate: token.genesis_date,
 
-  // Market Statistics
+  // Market Performance
   ath: formatMoney(token.ath),
+  athChange: token.ath_change,
+  athDate: token.ath_date,
+
   atl: formatMoney(token.atl),
-  athChange: token.ath_change
+  atlChange: token.atl_change,
+  atlDate: token.atl_date
 };
 
   }
