@@ -388,7 +388,13 @@ tokenomics = {
 
   atl: formatMoney(token.atl),
   atlChange: token.atl_change,
-  atlDate: token.atl_date
+  atlDate: token.atl_date,
+
+  // Price Performance
+  change24h: token.price_change_24h,
+  change7d: token.price_change_7d,
+  change30d: token.price_change_30d,
+  change1y: token.price_change_1y,
 };
 
   }
