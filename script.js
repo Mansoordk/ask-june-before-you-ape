@@ -770,66 +770,20 @@ projectInput.addEventListener("keypress", (e) => {
   }
 });
 
-const portfolioBtn = document.getElementById("portfolioBtn");
-const portfolioInput = document.getElementById("portfolioInput");
-const portfolioResult = document.getElementById("portfolioResult");
+const openPortfolio = document.getElementById("openPortfolio");
+const portfolioModal = document.getElementById("portfolioModal");
+const closePortfolio = document.getElementById("closePortfolio");
 
-portfolioBtn.addEventListener("click", async () => {
+openPortfolio.addEventListener("click", () => {
+  portfolioModal.classList.remove("hidden");
+});
 
-  const portfolio = portfolioInput.value.trim();
+closePortfolio.addEventListener("click", () => {
+  portfolioModal.classList.add("hidden");
+});
 
-  if (!portfolio) {
-    alert("Please enter your portfolio.");
-    return;
+window.addEventListener("click", (e) => {
+  if (e.target === portfolioModal) {
+    portfolioModal.classList.add("hidden");
   }
-
-  portfolioBtn.disabled = true;
-  portfolioBtn.textContent = "Analyzing...";
-
-  portfolioResult.innerHTML = `
-    <div class="card">
-      🤖 June AI is analyzing your portfolio...
-    </div>
-  `;
-
-  try {
-
-    const response = await fetch("/api/portfolio", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        portfolio
-      })
-    });
-
-    const data = await response.json();
-
-    console.log(data);
-
-    portfolioResult.innerHTML = `
-      <div class="card">
-        <h2>Portfolio Analysis Working ✅</h2>
-
-        <pre>${JSON.stringify(data, null, 2)}</pre>
-
-      </div>
-    `;
-
-  } catch (err) {
-
-    console.error(err);
-
-    portfolioResult.innerHTML = `
-      <div class="card">
-        Something went wrong.
-      </div>
-    `;
-
-  }
-
-  portfolioBtn.disabled = false;
-  portfolioBtn.textContent = "Analyze Portfolio";
-
 });
