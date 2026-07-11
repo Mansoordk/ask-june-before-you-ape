@@ -51,6 +51,20 @@ export default async function handler(req, res) {
       atl_date: coin.market_data.atl_date.usd,
 
 
+      // Price Performance
+      price_change_24h:
+      coin.market_data.price_change_percentage_24h,
+    
+      price_change_7d:
+        coin.market_data.price_change_percentage_7d,
+      
+      price_change_30d:
+        coin.market_data.price_change_percentage_30d,
+      
+      price_change_1y:
+        coin.market_data.price_change_percentage_1y,
+
+
       // Links
       website: coin.links.homepage?.[0] || null,
 
