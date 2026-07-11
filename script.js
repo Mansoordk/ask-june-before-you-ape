@@ -775,11 +775,23 @@ const portfolioModal = document.getElementById("portfolioModal");
 const closePortfolio = document.getElementById("closePortfolio");
 
 openPortfolio.addEventListener("click", () => {
-  portfolioModal.classList.remove("hidden");
+
+    if (!portfolioInput.value.trim()) {
+        portfolioInput.value = `BTC 40%
+ETH 30%
+SOL 20%
+SUI 10%`;
+    }
+
+    portfolioModal.classList.remove("hidden");
+    portfolioInput.focus();
 });
 
 closePortfolio.addEventListener("click", () => {
-  portfolioModal.classList.add("hidden");
+
+    portfolioModal.classList.add("hidden");
+
+    portfolioInput.value = "";
 });
 
 window.addEventListener("click", (e) => {
