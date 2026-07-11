@@ -398,6 +398,24 @@ function formatMoney(value) {
 }
 
 
+function formatPercent(value) {
+
+  if (value == null) return "N/A";
+
+  const abs = Math.abs(value);
+
+  let formatted;
+
+  if (abs >= 1000) {
+    formatted = (abs / 1000).toFixed(2) + "K%";
+  } else {
+    formatted = abs.toFixed(2) + "%";
+  }
+
+  return `${value >= 0 ? "+" : "-"}${formatted}`;
+}
+
+
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
 
