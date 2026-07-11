@@ -236,7 +236,9 @@ function renderMarketPerformance(token) {
 
         <div class="token-box">
           <span>📉 From ATH</span>
-          <strong>${token.athChange?.toFixed(2)}%</strong>
+          <strong style="color:${token.athChange >= 0 ? '#22c55e' : '#ef4444'}">
+          ${formatPercent(token.athChange)}
+        </strong>
         </div>
 
         <div class="token-box">
@@ -259,7 +261,9 @@ function renderMarketPerformance(token) {
 
         <div class="token-box">
           <span>🚀 From ATL</span>
-          <strong>${token.atlChange?.toFixed(2)}%</strong>
+         <strong style="color:${token.atlChange >= 0 ? '#22c55e' : '#ef4444'}">
+          ${formatPercent(token.atlChange)}
+        </strong>
         </div>
 
         <div class="token-box">
