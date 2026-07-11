@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ask June Before You Ape</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
 <div class="container">
@@ -22,31 +24,46 @@
       Get structured crypto research, risk scores, competitor analysis,
       and long-term outlooks in seconds.
     </p>
+
   </div>
 
   <div class="search-box">
+
     <input
       id="projectInput"
       type="text"
       placeholder="Enter project name (e.g. Hyperliquid, Bitcoin, Monad)"
     />
-   
+
     <button id="analyzeBtn">
       Analyze with June
     </button>
+
   </div>
 
- <div class="trending">
-  <span class="trending-title">🔥 Trending</span>
+  <div class="trending">
 
-  <div id="trendingProjects" class="trending-list"></div>
-</div>
+    <span class="trending-title">
+      🔥 Trending
+    </span>
+
+    <div
+      id="trendingProjects"
+      class="trending-list">
+    </div>
+
+  </div>
 
   <div class="features">
+
     <div>✓ Risk Score</div>
+
     <div>✓ Competitor Analysis</div>
+
     <div>✓ Long-Term Outlook</div>
+
     <div>✓ Beginner Friendly</div>
+
   </div>
 
   <div id="loading" class="hidden">
@@ -55,13 +72,24 @@
 
   <div id="result"></div>
 
-  <!-- Portfolio Modal -->
+  <footer>
+    Built by @mernsoordk • Powered by June AI
+  </footer>
+
+</div>
+
+
+<!-- ===========================
+PORTFOLIO MODAL
+=========================== -->
 
 <div id="portfolioModal" class="modal hidden">
 
   <div class="modal-content">
 
-    <span id="closePortfolio" class="close-btn">&times;</span>
+    <span id="closePortfolio" class="close-btn">
+      &times;
+    </span>
 
     <h2>🤖 AI Portfolio Analyzer</h2>
 
@@ -72,12 +100,11 @@
     <textarea
       id="portfolioInput"
       rows="8"
-      placeholder=
-     "BTC 40%
-      ETH 30%
-      SOL 20%
-      SUI 10%"
-    ></textarea>
+      placeholder="BTC 40%
+ETH 30%
+SOL 20%
+SUI 10%">
+    </textarea>
 
     <button id="portfolioBtn">
       Analyze Portfolio
@@ -89,13 +116,12 @@
 
 </div>
 
-  <footer>
-    Built by @mernsoordk • Powered by June AI
-  </footer>
 
-</div>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="script.js"></script>
+
 </body>
 </html>
