@@ -1,6 +1,3 @@
-const portfolioBtn = document.getElementById("portfolioBtn");
-const portfolioInput = document.getElementById("portfolioInput");
-const portfolioResult = document.getElementById("portfolioResult");
 const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
@@ -682,6 +679,16 @@ https://ask-june-before-you-ape.vercel.app`;
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`,
       "_blank"
     );
+  });
+
+
+    // Portfolio button
+    document
+  .getElementById("openPortfolioBtn")
+  ?.addEventListener("click", () => {
+
+    alert("🚀 AI Portfolio Analyzer is coming next!");
+
   });
 
   } catch (err) {
