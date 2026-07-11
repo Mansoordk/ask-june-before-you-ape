@@ -24,6 +24,8 @@ function renderAnalysis(data, tokenomics) {
 
 ${renderProjectInfo(tokenomics)}
 
+${renderMarketPerformance(tokenomics)}
+
 ${renderChart()}
 
     <div class="card">
