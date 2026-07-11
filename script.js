@@ -2,11 +2,6 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
 const loading = document.getElementById("loading");
-const portfolioModal = document.getElementById("portfolioModal");
-const portfolioBtn = document.getElementById("portfolioBtn");
-const portfolioInput = document.getElementById("portfolioInput");
-const portfolioResult = document.getElementById("portfolioResult");
-const closePortfolio = document.getElementById("closePortfolio");
 
 function renderAnalysis(data, tokenomics) {
   return `
@@ -100,23 +95,6 @@ ${renderChart()}
       <button id="shareBtn">𝕏 Share on X</button>
       <button id="downloadBtn">📸 Download Image</button>
     </div>
-
-    <div class="card">
-
-  <h2>🤖 AI Portfolio Analyzer</h2>
-
-  <p>
-    Already own multiple crypto assets?
-    Let June AI analyze your entire portfolio,
-    identify concentration risks, diversification,
-    and suggest improvements.
-  </p>
-
-  <button id="openPortfolioBtn">
-    Analyze My Portfolio →
-  </button>
-
-</div>
   `;
 }
 
@@ -686,16 +664,6 @@ https://ask-june-before-you-ape.vercel.app`;
     );
   });
 
-
-    // Portfolio button
-    document
-  .getElementById("openPortfolioBtn")
-  ?.addEventListener("click", () => {
-
-    portfolioModal.classList.remove("hidden");
-
-  });
-
   } catch (err) {
     console.error(err);
 
@@ -800,21 +768,4 @@ projectInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     analyzeBtn.click();
   }
-});
-
-
-closePortfolio.addEventListener("click", () => {
-
-  portfolioModal.classList.add("hidden");
-
-});
-
-window.addEventListener("click", (e) => {
-
-  if (e.target === portfolioModal) {
-
-    portfolioModal.classList.add("hidden");
-
-  }
-
 });
