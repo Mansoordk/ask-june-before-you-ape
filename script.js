@@ -243,7 +243,11 @@ function renderMarketPerformance(token) {
           <span>📅 ATH Date</span>
           <strong>${
             token.athDate
-              ? new Date(token.athDate).toLocaleDateString()
+              ?new Date(token.athDate).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
               : "N/A"
           }</strong>
         </div>
@@ -262,7 +266,11 @@ function renderMarketPerformance(token) {
           <span>📅 ATL Date</span>
           <strong>${
             token.atlDate
-              ? new Date(token.atlDate).toLocaleDateString()
+              ?new Date(token.atlDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })
               : "N/A"
           }</strong>
         </div>
