@@ -98,6 +98,23 @@ ${renderChart()}
       <button id="shareBtn">𝕏 Share on X</button>
       <button id="downloadBtn">📸 Download Image</button>
     </div>
+
+    <div class="card">
+
+  <h2>🤖 AI Portfolio Analyzer</h2>
+
+  <p>
+    Already own multiple crypto assets?
+    Let June AI analyze your entire portfolio,
+    identify concentration risks, diversification,
+    and suggest improvements.
+  </p>
+
+  <button id="openPortfolioBtn">
+    Analyze My Portfolio →
+  </button>
+
+</div>
   `;
 }
 
