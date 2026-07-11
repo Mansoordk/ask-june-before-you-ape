@@ -76,35 +76,24 @@ Return JSON only.
       }
     );
 
- const data = await response.json();
+  const data = await response.json();
 
-console.log("June Response:", JSON.stringify(data, null, 2));
-
-if (!response.ok) {
-  return res.status(response.status).json(data);
-}
-
-const content = data?.choices?.[0]?.message?.content;
-
-if (!content) {
-  return res.status(500).json({
-    error: "June API returned no content",
-    response: data
-  });
-}
+const content =
+  data?.choices?.[0]?.message?.content;
 
 const cleaned = content
   .replace(/```json/g, "")
   .replace(/```/g, "")
   .trim();
 
-try {
-  return res.status(200).json(JSON.parse(cleaned));
-} catch (e) {
-  return res.status(500).json({
-    error: "Invalid JSON returned by June",
-    raw: cleaned
-  });
-}
+return res.status(200).json(
+  JSON.parse(cleaned)
+);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
   }
 }
