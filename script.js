@@ -214,6 +214,61 @@ function renderProjectInfo(token) {
   `;
 }
 
+function renderMarketPerformance(token) {
+
+  if (!token) return "";
+
+  return `
+    <div class="card">
+
+      <h2>📈 Market Performance</h2>
+
+      <div class="tokenomics-grid">
+
+        <div class="token-box">
+          <span>🏆 All-Time High</span>
+          <strong>${token.ath}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📉 From ATH</span>
+          <strong>${token.athChange?.toFixed(2)}%</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📅 ATH Date</span>
+          <strong>${
+            token.athDate
+              ? new Date(token.athDate).toLocaleDateString()
+              : "N/A"
+          }</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📉 All-Time Low</span>
+          <strong>${token.atl}</strong>
+        </div>
+
+        <div class="token-box">
+          <span>🚀 From ATL</span>
+          <strong>${token.atlChange?.toFixed(2)}%</strong>
+        </div>
+
+        <div class="token-box">
+          <span>📅 ATL Date</span>
+          <strong>${
+            token.atlDate
+              ? new Date(token.atlDate).toLocaleDateString()
+              : "N/A"
+          }</strong>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
 
 function renderChart() {
 
