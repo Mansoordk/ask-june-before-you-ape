@@ -439,3 +439,20 @@ footer {
 .token-box a:hover{
   text-decoration:underline;
 }
+
+
+#portfolioInput {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  background: #131d3a;
+  color: white;
+  border: 1px solid #24335f;
+  resize: vertical;
+}
+
+#portfolioBtn {
+  margin-top: 12px;
+  width: 100%;
+}
