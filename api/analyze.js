@@ -86,6 +86,8 @@ const cleaned = content
   .replace(/```/g, "")
   .trim();
 
+    console.log(cleaned);
+
 return res.status(200).json(
   JSON.parse(cleaned)
 );
