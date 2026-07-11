@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ask June Before You Ape</title>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,70 +22,38 @@
       Get structured crypto research, risk scores, competitor analysis,
       and long-term outlooks in seconds.
     </p>
-
   </div>
 
-  <!-- ===================== -->
-  <!-- Project Analyzer -->
-  <!-- ===================== -->
-
-  <div class="card">
-
-    <h2>🔍 AI Project Analyzer</h2>
-
+  <div class="search-box">
     <input
       id="projectInput"
       type="text"
       placeholder="Enter project name (e.g. Hyperliquid, Bitcoin, Monad)"
     />
 
+    <div class="card">
+   
     <button id="analyzeBtn">
       Analyze with June
     </button>
-
   </div>
 
+ <div class="trending">
+  <span class="trending-title">🔥 Trending</span>
 
-  <!-- ===================== -->
-  <!-- Trending -->
-  <!-- ===================== -->
-
-  <div class="trending">
-
-    <span class="trending-title">
-      🔥 Trending
-    </span>
-
-    <div
-      id="trendingProjects"
-      class="trending-list"
-    ></div>
-
-  </div>
-
-  <!-- ===================== -->
-  <!-- Features -->
-  <!-- ===================== -->
+  <div id="trendingProjects" class="trending-list"></div>
+</div>
 
   <div class="features">
-
     <div>✓ Risk Score</div>
-
     <div>✓ Competitor Analysis</div>
-
     <div>✓ Long-Term Outlook</div>
-
     <div>✓ Beginner Friendly</div>
-
   </div>
-
-  <!-- Loading -->
 
   <div id="loading" class="hidden">
     June is researching...
   </div>
-
-  <!-- Project Result -->
 
   <div id="result"></div>
 
@@ -95,11 +62,8 @@
   </footer>
 
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script src="script.js"></script>
-
 </body>
 </html>
