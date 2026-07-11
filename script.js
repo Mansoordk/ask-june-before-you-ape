@@ -272,6 +272,67 @@ function renderMarketPerformance(token) {
 }
 
 
+function renderPricePerformance(token) {
+
+  if (!token) return "";
+
+  const color = (value) => {
+    if (value == null) return "#ffffff";
+    return value >= 0 ? "#22c55e" : "#ef4444";
+  };
+
+  const arrow = (value) => {
+    if (value == null) return "";
+    return value >= 0 ? "▲" : "▼";
+  };
+
+  const format = (value) => {
+    if (value == null) return "N/A";
+    return `${arrow(value)} ${Math.abs(value).toFixed(2)}%`;
+  };
+
+  return `
+    <div class="card">
+
+      <h2>📊 Price Performance</h2>
+
+      <div class="tokenomics-grid">
+
+        <div class="token-box">
+          <span>24 Hours</span>
+          <strong style="color:${color(token.change24h)}">
+            ${format(token.change24h)}
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>7 Days</span>
+          <strong style="color:${color(token.change7d)}">
+            ${format(token.change7d)}
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>30 Days</span>
+          <strong style="color:${color(token.change30d)}">
+            ${format(token.change30d)}
+          </strong>
+        </div>
+
+        <div class="token-box">
+          <span>1 Year</span>
+          <strong style="color:${color(token.change1y)}">
+            ${format(token.change1y)}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
 function renderChart() {
 
   return `
