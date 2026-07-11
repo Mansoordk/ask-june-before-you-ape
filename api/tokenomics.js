@@ -50,10 +50,6 @@ export default async function handler(req, res) {
       atl_change: coin.market_data.atl_change_percentage.usd,
       atl_date: coin.market_data.atl_date.usd,
 
-      // Market Stats
-      ath: coin.market_data.ath.usd,
-      ath_change: coin.market_data.ath_change_percentage.usd,
-      atl: coin.market_data.atl.usd,
 
       // Links
       website: coin.links.homepage?.[0] || null,
