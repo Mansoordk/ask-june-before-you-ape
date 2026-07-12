@@ -560,3 +560,13 @@ border-radius:20px;
 background:#60a5fa;
 
 }
+
+#portfolioChart{
+
+width:100%;
+
+max-height:320px;
+
+margin-top:20px;
+
+}
