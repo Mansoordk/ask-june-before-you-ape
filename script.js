@@ -3,6 +3,8 @@ const projectInput = document.getElementById("projectInput");
 const result = document.getElementById("result");
 const loading = document.getElementById("loading");
 
+window.portfolioChart = null;
+
 function renderAnalysis(data, tokenomics) {
   return `
     <div class="risk-card ${data.risk_level?.toLowerCase()}">
@@ -874,14 +876,6 @@ return `
 <strong>${data.overall_score}/100</strong>
 </div>
 
-<div class="card">
-
-<h2>🥧 Portfolio Allocation</h2>
-
-<canvas id="portfolioChart"></canvas>
-
-</div>
-
 <div class="token-box">
 <span>Risk Level</span>
 <strong>${data.risk_level}</strong>
@@ -903,6 +897,15 @@ return `
 </div>
 
 </div>
+
+<div class="card">
+
+<h2>🥧 Portfolio Allocation</h2>
+
+<canvas id="portfolioChart"></canvas>
+
+</div>
+
 
 <div class="card">
 <h2>📝 Summary</h2>
@@ -936,6 +939,11 @@ ${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
 
 function renderPortfolioChart(portfolio){
 
+if (window.portfolioChart) {
+    window.portfolioChart.destroy();
+    window.portfolioChart = null;
+}
+  
 const lines = portfolio
 .split("\n")
 .map(x=>x.trim())
