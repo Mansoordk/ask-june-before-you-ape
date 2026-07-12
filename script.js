@@ -835,16 +835,7 @@ portfolioBtn.addEventListener("click", async () => {
     });
 
     const data = await response.json();
-
-    portfolioResult.innerHTML = `
-      <div class="card">
-
-        <h2>Portfolio API Working ✅</h2>
-
-        <pre>${JSON.stringify(data, null, 2)}</pre>
-
-      </div>
-    `;
+portfolioResult.innerHTML = renderPortfolioReport(data);
 
   } catch (err) {
 
@@ -862,3 +853,70 @@ portfolioBtn.addEventListener("click", async () => {
   portfolioBtn.textContent = "Analyze Portfolio";
 
 });
+
+function renderPortfolioReport(data) {
+
+return `
+
+<div class="card">
+
+<h2>📊 Portfolio Analysis</h2>
+
+<div class="tokenomics-grid">
+
+<div class="token-box">
+<span>Overall Score</span>
+<strong>${data.overall_score}/100</strong>
+</div>
+
+<div class="token-box">
+<span>Risk Level</span>
+<strong>${data.risk_level}</strong>
+</div>
+
+<div class="token-box">
+<span>Diversification</span>
+<strong>${data.diversification}</strong>
+</div>
+
+<div class="token-box">
+<span>Best Asset</span>
+<strong>${data.best_asset}</strong>
+</div>
+
+<div class="token-box">
+<span>Riskiest Asset</span>
+<strong>${data.riskiest_asset}</strong>
+</div>
+
+</div>
+
+<div class="card">
+<h2>📝 Summary</h2>
+<p>${data.summary}</p>
+</div>
+
+<div class="card">
+<h2>💪 Strengths</h2>
+<ul>
+${data.strengths.map(x=>`<li>${x}</li>`).join("")}
+</ul>
+</div>
+
+<div class="card">
+<h2>⚠ Weaknesses</h2>
+<ul>
+${data.weaknesses.map(x=>`<li>${x}</li>`).join("")}
+</ul>
+</div>
+
+<div class="card">
+<h2>💡 Suggestions</h2>
+<ul>
+${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
+</ul>
+</div>
+
+`;
+
+}
