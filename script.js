@@ -837,6 +837,11 @@ portfolioBtn.addEventListener("click", async () => {
     const data = await response.json();
 portfolioResult.innerHTML = renderPortfolioReport(data);
 
+const portfolioText =
+document.getElementById("portfolioInput").value;
+
+renderPortfolioChart(portfolioText);
+    
   } catch (err) {
 
     console.error(err);
@@ -867,6 +872,14 @@ return `
 <div class="token-box">
 <span>Overall Score</span>
 <strong>${data.overall_score}/100</strong>
+</div>
+
+<div class="card">
+
+<h2>🥧 Portfolio Allocation</h2>
+
+<canvas id="portfolioChart"></canvas>
+
 </div>
 
 <div class="token-box">
@@ -918,5 +931,111 @@ ${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
 </div>
 
 `;
+
+}
+
+function renderPortfolioChart(portfolio){
+
+const lines = portfolio
+.split("\n")
+.map(x=>x.trim())
+.filter(Boolean);
+
+const labels = [];
+const values = [];
+
+for(const line of lines){
+
+const match =
+line.match(/^([A-Za-z0-9]+)\s+(\d+)/);
+
+if(match){
+
+labels.push(match[1].toUpperCase());
+
+values.push(Number(match[2]));
+
+}
+
+}
+
+const canvas =
+document.getElementById("portfolioChart");
+
+if(!canvas) return;
+
+const ctx =
+canvas.getContext("2d");
+
+if(window.portfolioChart){
+
+window.portfolioChart.destroy();
+
+}
+
+const colors = [
+
+"#f7931a",
+"#627eea",
+"#14f195",
+"#6fbcf0",
+"#8b5cf6",
+"#22c55e",
+"#ef4444",
+"#f59e0b",
+"#06b6d4",
+"#ec4899"
+
+];
+
+window.portfolioChart =
+new Chart(ctx,{
+
+type:"doughnut",
+
+data:{
+
+labels,
+
+datasets:[{
+
+data:values,
+
+backgroundColor:
+colors.slice(0,labels.length),
+
+borderWidth:0
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+position:"bottom",
+
+labels:{
+
+color:"white",
+
+font:{
+size:14
+}
+
+}
+
+}
+
+}
+
+}
+
+});
 
 }
