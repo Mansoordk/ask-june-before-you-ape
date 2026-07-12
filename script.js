@@ -799,3 +799,66 @@ window.addEventListener("click", (e) => {
     portfolioModal.classList.add("hidden");
   }
 });
+
+const portfolioBtn = document.getElementById("portfolioBtn");
+const portfolioResult = document.getElementById("portfolioResult");
+const portfolioInput = document.getElementById("portfolioInput");
+
+portfolioBtn.addEventListener("click", async () => {
+
+  const portfolio = portfolioInput.value.trim();
+
+  if (!portfolio) {
+    alert("Enter your portfolio.");
+    return;
+  }
+
+  portfolioBtn.disabled = true;
+  portfolioBtn.textContent = "Analyzing...";
+
+  portfolioResult.innerHTML = "";
+
+  try {
+
+    const response = await fetch("/api/portfolio", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        portfolio
+      })
+
+    });
+
+    const data = await response.json();
+
+    portfolioResult.innerHTML = `
+      <div class="card">
+
+        <h2>Portfolio API Working ✅</h2>
+
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+
+      </div>
+    `;
+
+  } catch (err) {
+
+    console.error(err);
+
+    portfolioResult.innerHTML = `
+      <div class="card">
+        Something went wrong.
+      </div>
+    `;
+
+  }
+
+  portfolioBtn.disabled = false;
+  portfolioBtn.textContent = "Analyze Portfolio";
+
+});
