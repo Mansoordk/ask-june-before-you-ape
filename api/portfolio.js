@@ -1,19 +1,19 @@
 export default async function handler(req, res) {
+
   if (req.method !== "POST") {
     return res.status(405).json({
-      error: "Method not allowed",
+      error: "Method not allowed"
     });
   }
 
   try {
+
     const { portfolio } = req.body;
 
     const prompt = `
 You are a professional crypto portfolio analyst.
 
-Analyze this crypto portfolio.
-
-Portfolio:
+Analyze this crypto portfolio:
 
 ${portfolio}
 
@@ -22,22 +22,26 @@ Return ONLY valid JSON.
 {
   "overall_score": 0,
   "risk_level": "",
+  "diversification": "",
+  "best_asset": "",
+  "riskiest_asset": "",
   "summary": "",
   "strengths": [],
   "weaknesses": [],
-  "diversification": "",
-  "suggestions": [],
-  "best_asset": "",
-  "riskiest_asset": ""
+  "suggestions": []
 }
 
 Rules:
 
-- overall_score between 0-100
-- strengths 3-5 items
-- weaknesses 3-5 items
-- suggestions 3-5 items
-- JSON only.
+- overall_score = 0-100
+- risk_level = Low, Medium or High
+- diversification = Excellent, Good, Fair or Poor
+- strengths = 3-5 points
+- weaknesses = 3-5 points
+- suggestions = 3-5 points
+- summary = 2 concise sentences
+
+Return JSON only.
 `;
 
     const response = await fetch(
@@ -46,47 +50,50 @@ Rules:
         method: "POST",
         headers: {
           Authorization: `Bearer ${process.env.JUNE_API_KEY}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           model: process.env.JUNE_MODEL,
           messages: [
             {
               role: "user",
-              content: prompt,
-            },
+              content: prompt
+            }
           ],
-          temperature: 0.5,
-        }),
+          temperature: 0.5
+        })
       }
     );
 
     if (!response.ok) {
-      const err = await response.text();
-      return res.status(response.status).json({
-        error: err,
+      const text = await response.text();
+
+      return res.status(500).json({
+        error: text
       });
     }
 
     const data = await response.json();
 
-    const content =
-      data?.choices?.[0]?.message?.content || "";
+    const content = data?.choices?.[0]?.message?.content;
 
     const cleaned = content
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
 
-    return res.status(200).json(JSON.parse(cleaned));
+    return res.status(200).json(
+      JSON.parse(cleaned)
+    );
 
   } catch (err) {
 
     console.error(err);
 
     return res.status(500).json({
-      error: err.message,
+      error: err.message
     });
 
   }
+
 }
