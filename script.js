@@ -616,9 +616,7 @@ if (endpoint === "/api/compare") {
 }
 
     // Copy button
-    document
-      .getElementById("copyBtn")
-      .addEventListener("click", async () => {
+   on("copyBtn", "click", async () => {
         await navigator.clipboard.writeText(
           result.innerText
         );
@@ -628,10 +626,7 @@ if (endpoint === "/api/compare") {
 
 
     // Download Image button
-document
-  .getElementById("downloadBtn")
-  .addEventListener("click", async () => {
-
+on("downloadBtn", "click", async () => {
     try {
 
       const canvas = await html2canvas(
@@ -665,10 +660,7 @@ document
 
 });
    // Share button
-document
-  .getElementById("shareBtn")
-  .addEventListener("click", () => {
-
+on("shareBtn", "click", () => {
     const tweet = `I analyzed ${project} using Ask June Before You Ape 🚀
 
 Risk Score: ${data.risk_score}/100
