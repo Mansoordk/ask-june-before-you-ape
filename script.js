@@ -430,8 +430,11 @@ function on(id, event, callback) {
 }
 
 
-analyzeBtn.addEventListener("click", async () => {
-  const project = projectInput.value.trim();
+if (analyzeBtn) {
+  analyzeBtn.addEventListener
+("click", async () => {
+    const project = projectInput.value.trim();
+}
 
   const endpoint = project.toLowerCase().includes(" vs ")
   ? "/api/compare"
