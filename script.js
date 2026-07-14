@@ -676,15 +676,15 @@ https://ask-june-before-you-ape.vercel.app`;
     );
   });
 
-  } catch (err) {
-    console.error(err);
+  } 
+  
+catch (err) {
 
-    result.innerHTML = `
-      <div class="card">
-        Something went wrong. Please try again.
-      </div>
-    `;
-  }
+  console.error("COMPARE ERROR:", err);
+
+  alert(err.message);
+
+}
 
   loading.classList.add("hidden");
 
