@@ -570,3 +570,46 @@ max-height:320px;
 margin-top:20px;
 
 }
+
+.compare-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
+}
+
+.compare-table th,
+.compare-table td{
+
+padding:14px;
+
+border:1px solid rgba(255,255,255,.08);
+
+text-align:center;
+
+}
+
+.compare-table th{
+
+background:#1e293b;
+
+color:#60a5fa;
+
+font-size:15px;
+
+}
+
+.compare-table td{
+
+background:#111827;
+
+}
+
+.compare-table tr:hover td{
+
+background:#172036;
+
+}
