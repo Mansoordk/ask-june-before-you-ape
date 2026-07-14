@@ -425,6 +425,9 @@ function formatPercent(value) {
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
 
+  const endpoint = project.toLowerCase().includes(" vs ")
+  ? "/api/compare"
+  : "/api/analyze";
 
   if (!project) {
     alert("Enter a project name");
@@ -438,7 +441,7 @@ loading.classList.remove("hidden");
 result.innerHTML = "";
 
   try {
-    const response = await fetch("/api/analyze", {
+   const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
