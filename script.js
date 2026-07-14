@@ -1057,3 +1057,73 @@ size:14
 });
 
 }
+
+function renderComparison(data){
+
+return `
+
+<div class="card">
+
+<h2>🆚 ${data.project_a} vs ${data.project_b}</h2>
+
+<table class="compare-table">
+
+<tr>
+<th>Feature</th>
+<th>${data.project_a}</th>
+<th>${data.project_b}</th>
+</tr>
+
+<tr>
+<td>Use Case</td>
+<td>${data.comparison["Use Case"].a}</td>
+<td>${data.comparison["Use Case"].b}</td>
+</tr>
+
+<tr>
+<td>Risk</td>
+<td>${data.comparison["Risk"].a}</td>
+<td>${data.comparison["Risk"].b}</td>
+</tr>
+
+<tr>
+<td>Adoption</td>
+<td>${data.comparison["Adoption"].a}</td>
+<td>${data.comparison["Adoption"].b}</td>
+</tr>
+
+<tr>
+<td>Developers</td>
+<td>${data.comparison["Developer Activity"].a}</td>
+<td>${data.comparison["Developer Activity"].b}</td>
+</tr>
+
+<tr>
+<td>Long-Term</td>
+<td>${data.comparison["Long-term Outlook"].a}</td>
+<td>${data.comparison["Long-term Outlook"].b}</td>
+</tr>
+
+</table>
+
+<div class="card">
+
+<h2>🏆 AI Winner</h2>
+
+<p><strong>${data.winner}</strong></p>
+
+</div>
+
+<div class="card">
+
+<h2>🤖 Summary</h2>
+
+<p>${data.summary}</p>
+
+</div>
+
+</div>
+
+`;
+
+}
