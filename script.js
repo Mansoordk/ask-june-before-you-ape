@@ -779,9 +779,10 @@ btn.addEventListener("click", () => {
 
 loadTrending();
 
-projectInput.addEventListener("keypress", (e) => {
+if (projectInput) {
+  projectInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
-    analyzeBtn.click();
+    analyzeBtn.click();}
   }
 });
 
@@ -789,7 +790,8 @@ const openPortfolio = document.getElementById("openPortfolio");
 const portfolioModal = document.getElementById("portfolioModal");
 const closePortfolio = document.getElementById("closePortfolio");
 
-openPortfolio.addEventListener("click", () => {
+if (openPortfolio) {
+  openPortfolio.addEventListener("click", () => {
 
     if (!portfolioInput.value.trim()) {
         portfolioInput.value = `BTC 40%
@@ -797,16 +799,18 @@ ETH 30%
 SOL 20%
 SUI 10%`;
     }
+    }
 
     portfolioModal.classList.remove("hidden");
     portfolioInput.focus();
 });
 
-closePortfolio.addEventListener("click", () => {
+if (closePortfolio) {
+  closePortfolio.addEventListener("click", () => {
 
     portfolioModal.classList.add("hidden");
 
-    portfolioInput.value = "";
+    portfolioInput.value = "";}
 });
 
 window.addEventListener("click", (e) => {
@@ -819,9 +823,11 @@ const portfolioBtn = document.getElementById("portfolioBtn");
 const portfolioResult = document.getElementById("portfolioResult");
 const portfolioInput = document.getElementById("portfolioInput");
 
-portfolioBtn.addEventListener("click", async () => {
+if (portfolioBtn) {
+  portfolioBtn.addEventListener("click", async () => {
 
   const portfolio = portfolioInput.value.trim();
+  }
 
   if (!portfolio) {
     alert("Enter your portfolio.");
