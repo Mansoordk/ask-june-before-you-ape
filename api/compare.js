@@ -56,11 +56,16 @@ Return ONLY valid JSON.
 
     const ai = await response.json();
 
+    console.log(ai);
+
     const content =
       ai.choices[0].message.content
       .replace(/```json/g,"")
       .replace(/```/g,"")
       .trim();
+
+    console.log("AI RAW RESPONSE:");
+console.log(content);
 
     res.status(200).json(
       JSON.parse(content)
