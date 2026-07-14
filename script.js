@@ -421,6 +421,14 @@ function formatPercent(value) {
   return `${value >= 0 ? "+" : "-"}${formatted}`;
 }
 
+function on(id, event, callback) {
+  const el = document.getElementById(id);
+
+  if (el) {
+    el.addEventListener(event, callback);
+  }
+}
+
 
 analyzeBtn.addEventListener("click", async () => {
   const project = projectInput.value.trim();
