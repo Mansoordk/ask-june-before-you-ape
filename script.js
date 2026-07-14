@@ -503,8 +503,15 @@ tokenomics = {
 
 }
 
- result.innerHTML =
-  renderAnalysis(data, tokenomics);
+if (endpoint === "/api/compare") {
+
+  result.innerHTML = renderComparison(data);
+
+} else {
+
+  result.innerHTML = renderAnalysis(data, tokenomics);
+
+}
 
     try {
 
