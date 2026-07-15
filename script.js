@@ -621,17 +621,27 @@ if (projectInput) {
 
 // ─── Portfolio Modal ──────────────────────────────────────
 
-if (openPortfolio) {
+if (openPortfolio && portfolioModal) {
+
   openPortfolio.addEventListener("click", () => {
+
+    walletModal.classList.add("hidden");
+
+    portfolioModal.classList.remove("hidden");
+
     if (!portfolioInput.value.trim()) {
+
       portfolioInput.value = `BTC 40%
 ETH 30%
 SOL 20%
 SUI 10%`;
+
     }
-    portfolioModal.classList.remove("hidden");
+
     portfolioInput.focus();
+
   });
+
 }
 
 if (closePortfolio) {
@@ -765,13 +775,19 @@ document.getElementById("walletResult");
 
 // Open
 
-openWallet.addEventListener("click", () => {
+if (openWallet && walletModal) {
 
-  walletModal.classList.remove("hidden");
+  openWallet.addEventListener("click", () => {
 
-  walletInput.focus();
+    portfolioModal.classList.add("hidden");
 
-});
+    walletModal.classList.remove("hidden");
+
+    walletInput.focus();
+
+  });
+
+}
 
 // Close
 
