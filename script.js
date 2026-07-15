@@ -12,6 +12,7 @@ const portfolioInput = document.getElementById("portfolioInput");
 
 window.portfolioChart = null;
 window.priceChart = null;
+window.walletChart = null;
 
 // ─── Security Helpers ──────────────────────────────────────
 
@@ -414,8 +415,12 @@ function renderPortfolioReport(data) {
 // ─── Portfolio Chart ──────────────────────────────────────
 
 function renderPortfolioChart(portfolio) {
-  if (window.portfolioChart) {
-    window.portfolioChart.destroy();
+  if (window.portfolioChart && typeof window.portfolioChart.destroy === 'function') {
+    try {
+      window.portfolioChart.destroy();
+    } catch (e) {
+      console.warn("Portfolio chart destroy failed:", e);
+    }
     window.portfolioChart = null;
   }
 
@@ -424,7 +429,6 @@ function renderPortfolioChart(portfolio) {
   const values = [];
 
   for (const line of lines) {
-    // Accepts "BTC 40", "BTC 40%", "BTC: 40.5", "btc  40.5%"
     const match = line.match(/^([A-Za-z0-9]+)[\s:]+(\d+(?:\.\d+)?)/);
     if (match) {
       labels.push(match[1].toUpperCase());
@@ -508,7 +512,6 @@ if (analyzeBtn) {
 
       const data = await response.json();
 
-      // Fetch tokenomics
       let tokenomics = null;
       try {
         const tokenResponse = await fetch(
@@ -563,8 +566,12 @@ if (analyzeBtn) {
 
           const chartCanvas = document.getElementById("priceChart");
           if (chartCanvas && typeof Chart !== "undefined") {
-            if (window.priceChart) {
-              window.priceChart.destroy();
+            if (window.priceChart && typeof window.priceChart.destroy === 'function') {
+              try {
+                window.priceChart.destroy();
+              } catch (e) {
+                console.warn("Price chart destroy failed:", e);
+              }
               window.priceChart = null;
             }
             window.priceChart = new Chart(chartCanvas, {
@@ -664,26 +671,17 @@ if (projectInput) {
 // ─── Portfolio Modal ──────────────────────────────────────
 
 if (openPortfolio && portfolioModal) {
-
   openPortfolio.addEventListener("click", () => {
-
     walletModal?.classList.add("hidden");
-
     portfolioModal.classList.remove("hidden");
-
     if (!portfolioInput.value.trim()) {
-
       portfolioInput.value = `BTC 40%
 ETH 30%
 SOL 20%
 SUI 10%`;
-
     }
-
     portfolioInput.focus();
-
   });
-
 }
 
 if (closePortfolio) {
@@ -812,17 +810,11 @@ const walletResult = document.getElementById("walletResult");
 // Open
 
 if (openWallet && walletModal) {
-
   openWallet.addEventListener("click", () => {
-
     portfolioModal?.classList.add("hidden");
-
     walletModal.classList.remove("hidden");
-
     walletInput?.focus();
-
   });
-
 }
 
 // Close
@@ -842,7 +834,6 @@ window.addEventListener("click", (e) => {
 // Analyze
 
 on("walletBtn", "click", async () => {
-
   const address = walletInput.value.trim();
 
   if (!address) {
@@ -881,209 +872,111 @@ on("walletBtn", "click", async () => {
   }
 });
 
-function renderWalletReport(data){
-
-return `
-
-<div class="risk-card ${data.risk_level.toLowerCase()}">
-
-<h2>Wallet Score</h2>
-
-<h1>${data.wallet_score}/100</h1>
-
-<p>${data.risk_level} Risk</p>
-
-</div>
-
-<div class="tokenomics-grid">
-
-<div class="token-box">
-
-<span>Portfolio Value</span>
-
-<strong>$${Number(data.portfolio_value).toLocaleString()}</strong>
-
-</div>
-
-<div class="token-box">
-
-<span>Wallet Type</span>
-
-<strong>${data.wallet_type}</strong>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>🪙 Top Holdings</h2>
-
-<table class="compare-table">
-
-<tr>
-
-<th>Token</th>
-
-<th>Balance</th>
-
-<th>Value</th>
-
-</tr>
-
-${data.top_tokens.map(token=>`
-
-<tr>
-
-<td>${token.symbol}</td>
-
-<td>${Number(token.balance).toFixed(4)}</td>
-
-<td>$${Number(token.usd).toFixed(2)}</td>
-
-</tr>
-
-`).join("")}
-
-</table>
-
-</div>
-
-<div class="card">
-
-<h2>🥧 Portfolio Allocation</h2>
-
-<canvas id="walletChart"></canvas>
-
-</div>
-
-<div class="card">
-
-<h2>📝 AI Summary</h2>
-
-<p>${data.summary}</p>
-
-</div>
-
-<div class="card">
-
-<h2>💪 Strengths</h2>
-
-<ul>
-
-${data.strengths.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>⚠ Weaknesses</h2>
-
-<ul>
-
-${data.weaknesses.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>💡 Suggestions</h2>
-
-<ul>
-
-${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>✅ Verdict</h2>
-
-<p>${data.verdict}</p>
-
-</div>
-
-`;
-
+function renderWalletReport(data) {
+  return `
+    <div class="risk-card ${data.risk_level.toLowerCase()}">
+      <h2>Wallet Score</h2>
+      <h1>${data.wallet_score}/100</h1>
+      <p>${data.risk_level} Risk</p>
+    </div>
+    <div class="tokenomics-grid">
+      <div class="token-box">
+        <span>Portfolio Value</span>
+        <strong>$${Number(data.portfolio_value).toLocaleString()}</strong>
+      </div>
+      <div class="token-box">
+        <span>Wallet Type</span>
+        <strong>${data.wallet_type}</strong>
+      </div>
+    </div>
+    <div class="card">
+      <h2>🪙 Top Holdings</h2>
+      <table class="compare-table">
+        <tr>
+          <th>Token</th>
+          <th>Balance</th>
+          <th>Value</th>
+        </tr>
+        ${data.top_tokens.map(token => `
+          <tr>
+            <td>${token.symbol}</td>
+            <td>${Number(token.balance).toFixed(4)}</td>
+            <td>$${Number(token.usd).toFixed(2)}</td>
+          </tr>
+        `).join("")}
+      </table>
+    </div>
+    <div class="card">
+      <h2>🥧 Portfolio Allocation</h2>
+      <canvas id="walletChart"></canvas>
+    </div>
+    <div class="card">
+      <h2>📝 AI Summary</h2>
+      <p>${data.summary}</p>
+    </div>
+    <div class="card">
+      <h2>💪 Strengths</h2>
+      <ul>
+        ${data.strengths.map(x => `<li>${x}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>⚠ Weaknesses</h2>
+      <ul>
+        ${data.weaknesses.map(x => `<li>${x}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>💡 Suggestions</h2>
+      <ul>
+        ${data.suggestions.map(x => `<li>${x}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>✅ Verdict</h2>
+      <p>${data.verdict}</p>
+    </div>
+  `;
 }
 
-function renderWalletChart(tokens){
+function renderWalletChart(tokens) {
+  const canvas = document.getElementById("walletChart");
+  if (!canvas) return;
 
-const canvas =
-document.getElementById("walletChart");
+  const ctx = canvas.getContext("2d");
 
-if(!canvas) return;
+  // ✅ Bulletproof destroy — checks it exists AND has the destroy method
+  if (window.walletChart && typeof window.walletChart.destroy === 'function') {
+    try {
+      window.walletChart.destroy();
+    } catch (e) {
+      console.warn("Wallet chart destroy failed:", e);
+    }
+    window.walletChart = null;
+  }
 
-const ctx =
-canvas.getContext("2d");
-
-if(window.walletChart){
-
-window.walletChart.destroy();
-
-}
-
-window.walletChart = new Chart(ctx,{
-
-type:"doughnut",
-
-data:{
-
-labels:tokens.map(t=>t.symbol),
-
-datasets:[{
-
-data:tokens.map(t=>t.usd),
-
-backgroundColor:[
-
-"#f7931a",
-"#627EEA",
-"#14F195",
-"#8B5CF6",
-"#22C55E",
-"#EF4444",
-"#06B6D4",
-"#F59E0B",
-"#EC4899",
-"#3B82F6"
-
-],
-
-borderWidth:0
-
-}]
-
-},
-
-options:{
-
-responsive:true,
-
-plugins:{
-
-legend:{
-
-position:"bottom",
-
-labels:{
-
-color:"white"
-
-}
-
-}
-
-}
-
-}
-
-});
-
+  window.walletChart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: tokens.map(t => t.symbol),
+      datasets: [{
+        data: tokens.map(t => t.usd),
+        backgroundColor: [
+          "#f7931a", "#627EEA", "#14F195", "#8B5CF6",
+          "#22C55E", "#EF4444", "#06B6D4", "#F59E0B",
+          "#EC4899", "#3B82F6"
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { color: "white" }
+        }
+      }
+    }
+  });
 }
