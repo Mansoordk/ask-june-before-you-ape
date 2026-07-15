@@ -40,6 +40,10 @@
     📊 Portfolio Analyzer
   </button>
 
+  <button id="openWallet">
+  👛 Wallet Analyzer
+</button>
+
 </div>
 
  <div class="trending">
@@ -92,6 +96,32 @@
 
   </div>
 
+    <div id="walletModal" class="modal hidden">
+
+  <div class="modal-content">
+
+    <span id="closeWallet" class="close-btn">&times;</span>
+
+    <h2>👛 AI Wallet Analyzer</h2>
+
+    <p>Enter any EVM wallet address.</p>
+
+    <input
+      id="walletInput"
+      type="text"
+      placeholder="0x..."
+    />
+
+    <button id="walletBtn">
+      Analyze Wallet
+    </button>
+
+    <div id="walletResult"></div>
+
+  </div>
+
+</div>
+    
 </div>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
