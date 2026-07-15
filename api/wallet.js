@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
     );
 
-    const tokens = await balanceRes.json();
+   console.log(await balanceRes.text());
 
     // Top holdings
 
