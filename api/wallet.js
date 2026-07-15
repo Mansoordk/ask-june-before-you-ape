@@ -116,3 +116,21 @@ JSON ONLY
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+
+const balanceRes = await fetch(
+  `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
+  { headers: { "X-API-Key": process.env.MORALIS_API_KEY } }
+);
+
+// 🔍 ADD THESE TWO LINES:
+console.log("Moralis status:", balanceRes.status);
+const raw = await balanceRes.text();
+console.log("Moralis raw body (first 500 chars):", raw.slice(0, 500));
+
+// Then try to parse it
+const jsonData = JSON.parse(raw);
+console.log("Parsed type:", typeof jsonData, "Is array?", Array.isArray(jsonData));
+console.log("Has result?", jsonData?.result !== undefined);
+const tokens = jsonData?.result;
+console.log("Tokens type:", typeof tokens, "Is array?", Array.isArray(tokens));
