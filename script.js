@@ -740,3 +740,201 @@ async function loadTrending() {
 }
 
 loadTrending();
+
+// ==============================
+// WALLET ANALYZER
+// ==============================
+
+const openWallet =
+document.getElementById("openWallet");
+
+const walletModal =
+document.getElementById("walletModal");
+
+const closeWallet =
+document.getElementById("closeWallet");
+
+const walletInput =
+document.getElementById("walletInput");
+
+const walletBtn =
+document.getElementById("walletBtn");
+
+const walletResult =
+document.getElementById("walletResult");
+
+// Open
+
+openWallet.addEventListener("click", () => {
+
+  walletModal.classList.remove("hidden");
+
+  walletInput.focus();
+
+});
+
+// Close
+
+closeWallet.addEventListener("click", () => {
+
+  walletModal.classList.add("hidden");
+
+});
+
+// Click outside
+
+window.addEventListener("click", (e) => {
+
+  if (e.target === walletModal) {
+
+    walletModal.classList.add("hidden");
+
+  }
+
+});
+
+// Analyze
+
+walletBtn.addEventListener("click", async () => {
+
+  const address = walletInput.value.trim();
+
+  if (!address) {
+
+    alert("Enter wallet address.");
+
+    return;
+
+  }
+
+  walletBtn.disabled = true;
+
+  walletBtn.textContent = "Analyzing...";
+
+  walletResult.innerHTML = "";
+
+  try {
+
+    const response = await fetch("/api/wallet", {
+
+      method: "POST",
+
+      headers: {
+
+        "Content-Type": "application/json"
+
+      },
+
+      body: JSON.stringify({
+
+        address
+
+      })
+
+    });
+
+    const data = await response.json();
+
+    walletResult.innerHTML = renderWalletReport(data);
+
+  }
+
+  catch (err) {
+
+    console.error(err);
+
+    walletResult.innerHTML = `
+
+<div class="card">
+
+Something went wrong.
+
+</div>
+
+`;
+
+  }
+
+  walletBtn.disabled = false;
+
+  walletBtn.textContent = "Analyze Wallet";
+
+});
+
+function renderWalletReport(data){
+
+return `
+
+<div class="risk-card ${data.risk_level.toLowerCase()}">
+
+<h2>Wallet Score</h2>
+
+<h1>${data.wallet_score}/100</h1>
+
+<p>${data.risk_level} Risk</p>
+
+</div>
+
+<div class="card">
+
+<h2>👤 Wallet Type</h2>
+
+<p>${data.wallet_type}</p>
+
+</div>
+
+<div class="card">
+
+<h2>📝 Summary</h2>
+
+<p>${data.summary}</p>
+
+</div>
+
+<div class="card">
+
+<h2>💪 Strengths</h2>
+
+<ul>
+
+${data.strengths.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>⚠ Weaknesses</h2>
+
+<ul>
+
+${data.weaknesses.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>💡 Suggestions</h2>
+
+<ul>
+
+${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>✅ Verdict</h2>
+
+<p>${data.verdict}</p>
+
+</div>
+
+`;
+
+}
