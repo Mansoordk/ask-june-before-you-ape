@@ -1,97 +1,113 @@
-const { moralisFetch } = require("./moralis");
-
 module.exports = async function handler(req, res) {
-
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed"
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-
     const { address } = req.body;
 
     if (!address) {
-      return res.status(400).json({
-        error: "Wallet address is required"
+      return res.status(400).json({ error: "Missing address in request body" });
+    }
+
+    const balanceRes = await fetch(
+      `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
+      { headers: { "X-API-Key": process.env.MORALIS_API_KEY } }
+    );
+
+    if (!balanceRes.ok) {
+      const errorBody = await balanceRes.text();
+      console.error(`Moralis returned ${balanceRes.status}: ${errorBody}`);
+      return res.status(502).json({
+        error: `Moralis API error (${balanceRes.status})`
       });
     }
 
-    // Native ETH Balance
-    const native = await moralisFetch(
-      `/wallets/${address}/balance?chain=eth`
-    );
+    const jsonData = await balanceRes.json();
+    console.log("Moralis response keys:", Object.keys(jsonData));
 
-    // ERC20 Tokens
-    const tokenData = await moralisFetch(
-      `/wallets/${address}/tokens?chain=eth`
-    );
+    const tokens = jsonData?.result;
 
-    const tokens = Array.isArray(tokenData.result)
-      ? tokenData.result
-      : [];
+    if (!Array.isArray(tokens)) {
+      console.error("Unexpected response:", JSON.stringify(jsonData).slice(0, 500));
+      return res.status(502).json({
+        error: "Unexpected response format from Moralis"
+      });
+    }
 
-    const nativeBalance =
-      Number(native.balance) / 1e18;
-
-    const nativeUsd =
-      Number(native.usd_value || 0);
-
-    const holdings = tokens.map(t => ({
-
+    const topTokens = tokens.slice(0, 10).map(t => ({
       symbol: t.symbol,
-
-      name: t.name,
-
-      balance:
-        Number(t.balance) /
-        Math.pow(10, t.decimals),
-
-      usd:
-        Number(t.usd_value || 0)
-
+      balance: Number(t.balance) / Math.pow(10, t.decimals ?? 18),
+      usd: t.usd_value ?? 0
     }));
 
-    const totalValue =
-      nativeUsd +
-      holdings.reduce(
-        (sum, t) => sum + t.usd,
-        0
-      );
+    const totalValue = topTokens.reduce((a, b) => a + b.usd, 0);
 
-    return res.status(200).json({
+    const prompt = `
+You are a professional crypto wallet analyst.
+Analyze this wallet.
+Address: ${address}
+Portfolio Value: $${totalValue}
+Top Holdings: ${JSON.stringify(topTokens, null, 2)}
 
-      address,
+Return ONLY valid JSON.
+{
+  "wallet_score": 0,
+  "risk_level": "",
+  "wallet_type": "",
+  "summary": "",
+  "strengths": [],
+  "weaknesses": [],
+  "suggestions": [],
+  "verdict": ""
+}
+Rules:
+wallet_score 0-100
+risk_level = Low Medium High
+strengths 3-5
+weaknesses 3-5
+suggestions 3-5
+JSON ONLY
+`;
 
-      portfolio_value: totalValue,
+    const aiRes = await fetch(
+      "https://api.blockchain.info/ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.JUNE_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: process.env.JUNE_MODEL,
+          messages: [{ role: "user", content: prompt }]
+        })
+      }
+    );
 
-      native: {
+    if (!aiRes.ok) {
+      return res.status(502).json({ error: "AI analysis request failed" });
+    }
 
-        symbol: native.native_token?.symbol || "ETH",
+    const aiData = await aiRes.json();
+    const choice = aiData?.choices?.[0];
+    if (!choice?.message?.content) {
+      return res.status(502).json({ error: "Invalid AI response format" });
+    }
 
-        balance: nativeBalance,
+    const content = choice.message.content
+      .replace(/```json\s*/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-        usd: nativeUsd
+    const report = JSON.parse(content);
+    report.portfolio_value = totalValue;
+    report.top_tokens = topTokens;
 
-      },
+    return res.status(200).json(report);
 
-      holdings
-
-    });
-
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-
-  catch (err) {
-
-    console.error(err);
-
-    return res.status(500).json({
-
-      error: err.message
-
-    });
-
-  }
-
 };
