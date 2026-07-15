@@ -880,43 +880,134 @@ on("walletBtn", "click", async () => {
   }
 });
 
-function renderWalletReport(data) {
-  const riskLevelClass = (data.risk_level || "").toLowerCase();
-  return `
-    <div class="risk-card ${riskLevelClass}">
-      <h2>Wallet Score</h2>
-      <h1>${escapeHtml(data.wallet_score)}/100</h1>
-      <p>${escapeHtml(data.risk_level) || "Unknown"} Risk</p>
-    </div>
-    <div class="card">
-      <h2>👤 Wallet Type</h2>
-      <p>${escapeHtml(data.wallet_type) || "N/A"}</p>
-    </div>
-    <div class="card">
-      <h2>📝 Summary</h2>
-      <p>${escapeHtml(data.summary) || "No summary available."}</p>
-    </div>
-    <div class="card">
-      <h2>💪 Strengths</h2>
-      <ul>
-        ${(data.strengths || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-      </ul>
-    </div>
-    <div class="card">
-      <h2>⚠ Weaknesses</h2>
-      <ul>
-        ${(data.weaknesses || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-      </ul>
-    </div>
-    <div class="card">
-      <h2>💡 Suggestions</h2>
-      <ul>
-        ${(data.suggestions || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-      </ul>
-    </div>
-    <div class="card">
-      <h2>✅ Verdict</h2>
-      <p>${escapeHtml(data.verdict) || "No verdict available."}</p>
-    </div>
-  `;
+function renderWalletReport(data){
+
+return `
+
+<div class="risk-card ${data.risk_level.toLowerCase()}">
+
+<h2>Wallet Score</h2>
+
+<h1>${data.wallet_score}/100</h1>
+
+<p>${data.risk_level} Risk</p>
+
+</div>
+
+<div class="tokenomics-grid">
+
+<div class="token-box">
+
+<span>Portfolio Value</span>
+
+<strong>$${Number(data.portfolio_value).toLocaleString()}</strong>
+
+</div>
+
+<div class="token-box">
+
+<span>Wallet Type</span>
+
+<strong>${data.wallet_type}</strong>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🪙 Top Holdings</h2>
+
+<table class="compare-table">
+
+<tr>
+
+<th>Token</th>
+
+<th>Balance</th>
+
+<th>Value</th>
+
+</tr>
+
+${data.top_tokens.map(token=>`
+
+<tr>
+
+<td>${token.symbol}</td>
+
+<td>${Number(token.balance).toFixed(4)}</td>
+
+<td>$${Number(token.usd).toFixed(2)}</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>🥧 Portfolio Allocation</h2>
+
+<canvas id="walletChart"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>📝 AI Summary</h2>
+
+<p>${data.summary}</p>
+
+</div>
+
+<div class="card">
+
+<h2>💪 Strengths</h2>
+
+<ul>
+
+${data.strengths.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>⚠ Weaknesses</h2>
+
+<ul>
+
+${data.weaknesses.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>💡 Suggestions</h2>
+
+<ul>
+
+${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>✅ Verdict</h2>
+
+<p>${data.verdict}</p>
+
+</div>
+
+`;
+
 }
