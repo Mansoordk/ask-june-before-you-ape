@@ -11,6 +11,32 @@ const portfolioResult = document.getElementById("portfolioResult");
 const portfolioInput = document.getElementById("portfolioInput");
 
 window.portfolioChart = null;
+window.priceChart = null;
+
+// ─── Security Helpers ──────────────────────────────────────
+
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function safeUrl(url) {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return parsed.href;
+    }
+  } catch (_) {
+    /* invalid URL */
+  }
+  return null;
+}
 
 // ─── Formatting Helpers ───────────────────────────────────
 
@@ -49,14 +75,15 @@ function formatPercent(value) {
 // ─── Renderers ────────────────────────────────────────────
 
 function renderAnalysis(data, tokenomics) {
+  const riskLevelClass = (data.risk_level || "").toLowerCase();
   return `
-    <div class="risk-card ${data.risk_level?.toLowerCase()}">
+    <div class="risk-card ${riskLevelClass}">
       <h2>Risk Score</h2>
-      <h1>${data.risk_score}/100</h1>
+      <h1>${escapeHtml(data.risk_score)}/100</h1>
       <div class="risk-bar">
-        <div class="risk-fill ${data.risk_level?.toLowerCase()}" style="width:${data.risk_score}%"></div>
+        <div class="risk-fill ${riskLevelClass}" style="width:${Number(data.risk_score) || 0}%"></div>
       </div>
-      <p>${data.risk_level} Risk</p>
+      <p>${escapeHtml(data.risk_level)} Risk</p>
     </div>
     ${renderTokenomics(tokenomics)}
     ${renderProjectInfo(tokenomics)}
@@ -65,53 +92,53 @@ function renderAnalysis(data, tokenomics) {
     ${renderChart()}
     <div class="card">
       <h2>📋 Overview</h2>
-      <p>${data.overview || "No overview available."}</p>
+      <p>${escapeHtml(data.overview) || "No overview available."}</p>
     </div>
     <div class="card">
       <h2>⚙️ Use Case</h2>
-      <p>${data.use_case || "No use case available."}</p>
+      <p>${escapeHtml(data.use_case) || "No use case available."}</p>
     </div>
     <div class="card">
       <h2>💪 Strengths</h2>
       <ul>
-        ${(data.strengths || []).map(item => `<li>${item}</li>`).join("")}
+        ${(data.strengths || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </div>
     <div class="card">
       <h2>⚠️ Risks</h2>
       <ul>
-        ${(data.risks || []).map(item => `<li>${item}</li>`).join("")}
+        ${(data.risks || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </div>
     <div class="card">
       <h2>🥊 Competitors</h2>
       <ul>
-        ${(data.competitors || []).map(item => `<li>${item}</li>`).join("")}
+        ${(data.competitors || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </div>
     <div class="card">
       <h2>🟢 Bull Case</h2>
       <ul>
-        ${(data.bull_case || []).map(item => `<li>${item}</li>`).join("")}
+        ${(data.bull_case || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </div>
     <div class="card">
       <h2>🔴 Bear Case</h2>
       <ul>
-        ${(data.bear_case || []).map(item => `<li>${item}</li>`).join("")}
+        ${(data.bear_case || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </div>
     <div class="card">
       <h2>🎯 Investment Thesis</h2>
-      <p>${data.investment_thesis || "No investment thesis available."}</p>
+      <p>${escapeHtml(data.investment_thesis) || "No investment thesis available."}</p>
     </div>
     <div class="card">
       <h2>📈 Outlook</h2>
-      <p>${data.outlook || "No outlook available."}</p>
+      <p>${escapeHtml(data.outlook) || "No outlook available."}</p>
     </div>
     <div class="card">
       <h2>🎯 Verdict</h2>
-      <p>${data.verdict || "No verdict available."}</p>
+      <p>${escapeHtml(data.verdict) || "No verdict available."}</p>
     </div>
     <div class="card">
       <button id="copyBtn">📋 Copy Analysis</button>
@@ -129,27 +156,27 @@ function renderTokenomics(token) {
       <div class="tokenomics-grid">
         <div class="token-box">
           <span>💰 Price</span>
-          <strong>${token.price}</strong>
+          <strong>${escapeHtml(token.price)}</strong>
         </div>
         <div class="token-box">
           <span>🏆 Market Cap</span>
-          <strong>${token.marketCap}</strong>
+          <strong>${escapeHtml(token.marketCap)}</strong>
         </div>
         <div class="token-box">
           <span>📈 FDV</span>
-          <strong>${token.fdv}</strong>
+          <strong>${escapeHtml(token.fdv)}</strong>
         </div>
         <div class="token-box">
           <span>🔄 24h Volume</span>
-          <strong>${token.volume}</strong>
+          <strong>${escapeHtml(token.volume)}</strong>
         </div>
         <div class="token-box">
           <span>🪙 Circulating</span>
-          <strong>${token.supply}</strong>
+          <strong>${escapeHtml(token.supply)}</strong>
         </div>
         <div class="token-box">
           <span>🥇 Rank</span>
-          <strong>#${token.rank}</strong>
+          <strong>#${escapeHtml(token.rank)}</strong>
         </div>
       </div>
     </div>
@@ -158,33 +185,37 @@ function renderTokenomics(token) {
 
 function renderProjectInfo(token) {
   if (!token) return "";
+  const website = safeUrl(token.website);
+  const twitter = safeUrl(token.twitter);
+  const github = safeUrl(token.github);
+  const telegram = safeUrl(token.telegram);
   return `
     <div class="card">
       <h2>🌐 Project Information</h2>
       <div class="tokenomics-grid">
         <div class="token-box">
           <span>🏷️ Category</span>
-          <strong>${token.category || "N/A"}</strong>
+          <strong>${escapeHtml(token.category) || "N/A"}</strong>
         </div>
         <div class="token-box">
           <span>📅 Launch Date</span>
-          <strong>${token.genesisDate || "N/A"}</strong>
+          <strong>${escapeHtml(token.genesisDate) || "N/A"}</strong>
         </div>
         <div class="token-box">
           <span>🌍 Website</span>
-          <strong>${token.website ? `<a href="${token.website}" target="_blank">Open ↗</a>` : "N/A"}</strong>
+          <strong>${website ? `<a href="${website}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : "N/A"}</strong>
         </div>
         <div class="token-box">
           <span>𝕏 Twitter</span>
-          <strong>${token.twitter ? `<a href="${token.twitter}" target="_blank">Open ↗</a>` : "N/A"}</strong>
+          <strong>${twitter ? `<a href="${twitter}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : "N/A"}</strong>
         </div>
         <div class="token-box">
           <span>💻 GitHub</span>
-          <strong>${token.github ? `<a href="${token.github}" target="_blank">Open ↗</a>` : "N/A"}</strong>
+          <strong>${github ? `<a href="${github}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : "N/A"}</strong>
         </div>
         <div class="token-box">
           <span>💬 Telegram</span>
-          <strong>${token.telegram ? `<a href="${token.telegram}" target="_blank">Open ↗</a>` : "N/A"}</strong>
+          <strong>${telegram ? `<a href="${telegram}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : "N/A"}</strong>
         </div>
       </div>
     </div>
@@ -199,7 +230,7 @@ function renderMarketPerformance(token) {
       <div class="tokenomics-grid">
         <div class="token-box">
           <span>🏆 All-Time High</span>
-          <strong>${token.ath}</strong>
+          <strong>${escapeHtml(token.ath)}</strong>
         </div>
         <div class="token-box">
           <span>📉 From ATH</span>
@@ -211,7 +242,7 @@ function renderMarketPerformance(token) {
         </div>
         <div class="token-box">
           <span>📉 All-Time Low</span>
-          <strong>${token.atl}</strong>
+          <strong>${escapeHtml(token.atl)}</strong>
         </div>
         <div class="token-box">
           <span>🚀 From ATL</span>
@@ -275,48 +306,50 @@ function renderChart() {
 }
 
 function renderComparison(data) {
+  const comp = data.comparison || {};
+  const cell = (key, side) => escapeHtml(comp[key]?.[side]) || "N/A";
   return `
     <div class="card">
-      <h2>🆚 ${data.project_a} vs ${data.project_b}</h2>
+      <h2>🆚 ${escapeHtml(data.project_a)} vs ${escapeHtml(data.project_b)}</h2>
       <table class="compare-table">
         <tr>
           <th>Feature</th>
-          <th>${data.project_a}</th>
-          <th>${data.project_b}</th>
+          <th>${escapeHtml(data.project_a)}</th>
+          <th>${escapeHtml(data.project_b)}</th>
         </tr>
         <tr>
           <td>Use Case</td>
-          <td>${data.comparison["Use Case"].a}</td>
-          <td>${data.comparison["Use Case"].b}</td>
+          <td>${cell("Use Case", "a")}</td>
+          <td>${cell("Use Case", "b")}</td>
         </tr>
         <tr>
           <td>Risk</td>
-          <td>${data.comparison["Risk"].a}</td>
-          <td>${data.comparison["Risk"].b}</td>
+          <td>${cell("Risk", "a")}</td>
+          <td>${cell("Risk", "b")}</td>
         </tr>
         <tr>
           <td>Adoption</td>
-          <td>${data.comparison["Adoption"].a}</td>
-          <td>${data.comparison["Adoption"].b}</td>
+          <td>${cell("Adoption", "a")}</td>
+          <td>${cell("Adoption", "b")}</td>
         </tr>
         <tr>
           <td>Developers</td>
-          <td>${data.comparison["Developer Activity"].a}</td>
-          <td>${data.comparison["Developer Activity"].b}</td>
+          <td>${cell("Developer Activity", "a")}</td>
+          <td>${cell("Developer Activity", "b")}</td>
         </tr>
         <tr>
           <td>Long-Term</td>
-          <td>${data.comparison["Long-term Outlook"].a}</td>
-          <td>${data.comparison["Long-term Outlook"].b}</td>
+          <td>${cell("Long-term Outlook", "a")}</td>
+          <td>${cell("Long-term Outlook", "b")}</td>
         </tr>
       </table>
       <div class="card">
         <h2>🏆 AI Winner</h2>
-        <p><strong>${data.winner}</strong></p>
+        <p><strong>${escapeHtml(data.winner)}</strong></p>
       </div>
       <div class="card">
         <h2>🤖 Summary</h2>
-        <p>${data.summary}</p>
+        <p>${escapeHtml(data.summary)}</p>
       </div>
     </div>
   `;
@@ -329,23 +362,23 @@ function renderPortfolioReport(data) {
       <div class="tokenomics-grid">
         <div class="token-box">
           <span>Overall Score</span>
-          <strong>${data.overall_score}/100</strong>
+          <strong>${escapeHtml(data.overall_score)}/100</strong>
         </div>
         <div class="token-box">
           <span>Risk Level</span>
-          <strong>${data.risk_level}</strong>
+          <strong>${escapeHtml(data.risk_level)}</strong>
         </div>
         <div class="token-box">
           <span>Diversification</span>
-          <strong>${data.diversification}</strong>
+          <strong>${escapeHtml(data.diversification)}</strong>
         </div>
         <div class="token-box">
           <span>Best Asset</span>
-          <strong>${data.best_asset}</strong>
+          <strong>${escapeHtml(data.best_asset)}</strong>
         </div>
         <div class="token-box">
           <span>Riskiest Asset</span>
-          <strong>${data.riskiest_asset}</strong>
+          <strong>${escapeHtml(data.riskiest_asset)}</strong>
         </div>
       </div>
       <div class="card">
@@ -354,24 +387,24 @@ function renderPortfolioReport(data) {
       </div>
       <div class="card">
         <h2>📝 Summary</h2>
-        <p>${data.summary}</p>
+        <p>${escapeHtml(data.summary)}</p>
       </div>
       <div class="card">
         <h2>💪 Strengths</h2>
         <ul>
-          ${data.strengths.map(x => `<li>${x}</li>`).join("")}
+          ${(data.strengths || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
         </ul>
       </div>
       <div class="card">
         <h2>⚠ Weaknesses</h2>
         <ul>
-          ${data.weaknesses.map(x => `<li>${x}</li>`).join("")}
+          ${(data.weaknesses || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
         </ul>
       </div>
       <div class="card">
         <h2>💡 Suggestions</h2>
         <ul>
-          ${data.suggestions.map(x => `<li>${x}</li>`).join("")}
+          ${(data.suggestions || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
         </ul>
       </div>
     </div>
@@ -391,7 +424,8 @@ function renderPortfolioChart(portfolio) {
   const values = [];
 
   for (const line of lines) {
-    const match = line.match(/^([A-Za-z0-9]+)\s+(\d+)/);
+    // Accepts "BTC 40", "BTC 40%", "BTC: 40.5", "btc  40.5%"
+    const match = line.match(/^([A-Za-z0-9]+)[\s:]+(\d+(?:\.\d+)?)/);
     if (match) {
       labels.push(match[1].toUpperCase());
       values.push(Number(match[2]));
@@ -399,7 +433,7 @@ function renderPortfolioChart(portfolio) {
   }
 
   const canvas = document.getElementById("portfolioChart");
-  if (!canvas || typeof Chart === "undefined") return;
+  if (!canvas || typeof Chart === "undefined" || labels.length === 0) return;
 
   const ctx = canvas.getContext("2d");
 
@@ -468,6 +502,10 @@ if (analyzeBtn) {
         body: JSON.stringify({ project }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Analysis request failed (${response.status})`);
+      }
+
       const data = await response.json();
 
       // Fetch tokenomics
@@ -525,7 +563,11 @@ if (analyzeBtn) {
 
           const chartCanvas = document.getElementById("priceChart");
           if (chartCanvas && typeof Chart !== "undefined") {
-            new Chart(chartCanvas, {
+            if (window.priceChart) {
+              window.priceChart.destroy();
+              window.priceChart = null;
+            }
+            window.priceChart = new Chart(chartCanvas, {
               type: "line",
               data: {
                 labels,
@@ -625,7 +667,7 @@ if (openPortfolio && portfolioModal) {
 
   openPortfolio.addEventListener("click", () => {
 
-    walletModal.classList.add("hidden");
+    walletModal?.classList.add("hidden");
 
     portfolioModal.classList.remove("hidden");
 
@@ -679,6 +721,10 @@ if (portfolioBtn) {
         body: JSON.stringify({ portfolio }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Portfolio request failed (${response.status})`);
+      }
+
       const data = await response.json();
       portfolioResult.innerHTML = renderPortfolioReport(data);
 
@@ -700,6 +746,9 @@ if (portfolioBtn) {
 async function loadTrending() {
   try {
     const response = await fetch("/api/trending");
+    if (!response.ok) {
+      throw new Error(`Trending request failed (${response.status})`);
+    }
     const projects = await response.json();
 
     const container = document.getElementById("trendingProjects");
@@ -726,10 +775,10 @@ async function loadTrending() {
       btn.innerHTML = `
         <div class="coin-card">
           <div class="coin-top">
-            <span class="coin-symbol">${project.symbol}</span>
-            <span class="coin-rank">#${project.rank ?? "-"}</span>
+            <span class="coin-symbol">${escapeHtml(project.symbol)}</span>
+            <span class="coin-rank">#${escapeHtml(project.rank) || "-"}</span>
           </div>
-          <div class="coin-name">${project.name}</div>
+          <div class="coin-name">${escapeHtml(project.name)}</div>
           <div class="coin-price">${price}</div>
           <div class="${positive ? "coin-green" : "coin-red"}">
             ${project.change == null ? "N/A" : `${positive ? "▲" : "▼"} ${Math.abs(project.change).toFixed(2)}%`}
@@ -755,23 +804,10 @@ loadTrending();
 // WALLET ANALYZER
 // ==============================
 
-const openWallet =
-document.getElementById("openWallet");
-
-const walletModal =
-document.getElementById("walletModal");
-
-const closeWallet =
-document.getElementById("closeWallet");
-
-const walletInput =
-document.getElementById("walletInput");
-
-const walletBtn =
-document.getElementById("walletBtn");
-
-const walletResult =
-document.getElementById("walletResult");
+const openWallet = document.getElementById("openWallet");
+const walletModal = document.getElementById("walletModal");
+const walletInput = document.getElementById("walletInput");
+const walletResult = document.getElementById("walletResult");
 
 // Open
 
@@ -779,11 +815,11 @@ if (openWallet && walletModal) {
 
   openWallet.addEventListener("click", () => {
 
-    portfolioModal.classList.add("hidden");
+    portfolioModal?.classList.add("hidden");
 
     walletModal.classList.remove("hidden");
 
-    walletInput.focus();
+    walletInput?.focus();
 
   });
 
@@ -791,166 +827,96 @@ if (openWallet && walletModal) {
 
 // Close
 
-closeWallet.addEventListener("click", () => {
-
+on("closeWallet", "click", () => {
   walletModal.classList.add("hidden");
-
 });
 
 // Click outside
 
 window.addEventListener("click", (e) => {
-
   if (e.target === walletModal) {
-
     walletModal.classList.add("hidden");
-
   }
-
 });
 
 // Analyze
 
-walletBtn.addEventListener("click", async () => {
+on("walletBtn", "click", async () => {
 
   const address = walletInput.value.trim();
 
   if (!address) {
-
     alert("Enter wallet address.");
-
     return;
-
   }
 
-  walletBtn.disabled = true;
-
-  walletBtn.textContent = "Analyzing...";
-
+  const walletBtnEl = document.getElementById("walletBtn");
+  walletBtnEl.disabled = true;
+  walletBtnEl.textContent = "Analyzing...";
   walletResult.innerHTML = "";
 
   try {
-
     const response = await fetch("/api/wallet", {
-
       method: "POST",
-
-      headers: {
-
-        "Content-Type": "application/json"
-
-      },
-
-      body: JSON.stringify({
-
-        address
-
-      })
-
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ address }),
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Wallet request failed (${response.status})`);
+    }
 
+    const data = await response.json();
     walletResult.innerHTML = renderWalletReport(data);
 
-  }
-
-  catch (err) {
-
+  } catch (err) {
     console.error(err);
-
     walletResult.innerHTML = `
-
-<div class="card">
-
-Something went wrong.
-
-</div>
-
-`;
-
+      <div class="card">Something went wrong.</div>
+    `;
+  } finally {
+    walletBtnEl.disabled = false;
+    walletBtnEl.textContent = "Analyze Wallet";
   }
-
-  walletBtn.disabled = false;
-
-  walletBtn.textContent = "Analyze Wallet";
-
 });
 
-function renderWalletReport(data){
-
-return `
-
-<div class="risk-card ${data.risk_level.toLowerCase()}">
-
-<h2>Wallet Score</h2>
-
-<h1>${data.wallet_score}/100</h1>
-
-<p>${data.risk_level} Risk</p>
-
-</div>
-
-<div class="card">
-
-<h2>👤 Wallet Type</h2>
-
-<p>${data.wallet_type}</p>
-
-</div>
-
-<div class="card">
-
-<h2>📝 Summary</h2>
-
-<p>${data.summary}</p>
-
-</div>
-
-<div class="card">
-
-<h2>💪 Strengths</h2>
-
-<ul>
-
-${data.strengths.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>⚠ Weaknesses</h2>
-
-<ul>
-
-${data.weaknesses.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>💡 Suggestions</h2>
-
-<ul>
-
-${data.suggestions.map(x=>`<li>${x}</li>`).join("")}
-
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>✅ Verdict</h2>
-
-<p>${data.verdict}</p>
-
-</div>
-
-`;
-
+function renderWalletReport(data) {
+  const riskLevelClass = (data.risk_level || "").toLowerCase();
+  return `
+    <div class="risk-card ${riskLevelClass}">
+      <h2>Wallet Score</h2>
+      <h1>${escapeHtml(data.wallet_score)}/100</h1>
+      <p>${escapeHtml(data.risk_level) || "Unknown"} Risk</p>
+    </div>
+    <div class="card">
+      <h2>👤 Wallet Type</h2>
+      <p>${escapeHtml(data.wallet_type) || "N/A"}</p>
+    </div>
+    <div class="card">
+      <h2>📝 Summary</h2>
+      <p>${escapeHtml(data.summary) || "No summary available."}</p>
+    </div>
+    <div class="card">
+      <h2>💪 Strengths</h2>
+      <ul>
+        ${(data.strengths || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>⚠ Weaknesses</h2>
+      <ul>
+        ${(data.weaknesses || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>💡 Suggestions</h2>
+      <ul>
+        ${(data.suggestions || []).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>✅ Verdict</h2>
+      <p>${escapeHtml(data.verdict) || "No verdict available."}</p>
+    </div>
+  `;
 }
