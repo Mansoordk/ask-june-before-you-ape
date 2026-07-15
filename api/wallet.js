@@ -10,10 +10,24 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: "Missing address in request body" });
     }
 
-    const balanceRes = await fetch(
-      `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
-      { headers: { "X-API-Key": process.env.MORALIS_API_KEY } }
-    );
+  const response = await fetch(
+  `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth&include=percent_change`,
+  {
+    headers: {
+      "X-API-Key": process.env.MORALIS_API_KEY
+    }
+  }
+);
+
+if (!response.ok) {
+  throw new Error(await response.text());
+}
+
+const tokens = await response.json();
+
+if (!Array.isArray(tokens)) {
+  throw new Error(JSON.stringify(tokens));
+}
 
     if (!balanceRes.ok) {
       const errorBody = await balanceRes.text();
