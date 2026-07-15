@@ -868,6 +868,7 @@ on("walletBtn", "click", async () => {
 
     const data = await response.json();
     walletResult.innerHTML = renderWalletReport(data);
+    renderWalletChart(data.top_tokens);
 
   } catch (err) {
     console.error(err);
