@@ -5,19 +5,16 @@ const headers = {
 };
 
 async function moralisFetch(endpoint) {
+  // ✅ Ensure there's always a leading slash
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
-    headers
-  });
+  const res = await fetch(`${BASE_URL}${path}`, { headers });
 
   if (!res.ok) {
-    throw new Error(await res.text());
+    throw new Error(`Moralis API error (${res.status}): ${await res.text()}`);
   }
 
   return res.json();
-
 }
 
-module.exports = {
-  moralisFetch
-};
+module.exports = { moralisFetch };
