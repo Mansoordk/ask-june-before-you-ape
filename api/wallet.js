@@ -1,3 +1,5 @@
+const { moralisFetch } = require("./moralis");
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -10,38 +12,17 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: "Missing address in request body" });
     }
 
-const [netWorthRes, tokenRes] = await Promise.all([
+    // ✅ Using the shared moralisFetch helper — cleaner & DRY
+    const [netWorthData, tokenData] = await Promise.all([
+      moralisFetch(`/wallets/${address}/net-worth?chains%5B0%5D=eth&exclude_spam=true`),
+      moralisFetch(`/wallets/${address}/tokens?chain=eth`)
+    ]);
 
-  fetch(
-    `https://deep-index.moralis.io/api/v2.2/wallets/${address}/net-worth?chains%5B0%5D=eth&exclude_spam=true`,
-    {
-      headers: {
-        "X-API-Key": process.env.MORALIS_API_KEY
-      }
-    }
-  ),
+    const tokens = tokenData.result || [];
 
-  fetch(
-    `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
-    {
-      headers: {
-        "X-API-Key": process.env.MORALIS_API_KEY
-      }
-    }
-  )
-
-]);
-
-const netWorthData = await netWorthRes.json();
-const tokenData = await tokenRes.json();
-
-const tokens = tokenData.result || [];
-
-const totalValue =
-Number(netWorthData.total_networth_usd || 0);
-
+    // ✅ Array check BEFORE processing
     if (!Array.isArray(tokens)) {
-      console.error("Unexpected response:", JSON.stringify(jsonData).slice(0, 500));
+      console.error("Unexpected response:", JSON.stringify(tokenData).slice(0, 500));
       return res.status(502).json({
         error: "Unexpected response format from Moralis"
       });
@@ -53,7 +34,8 @@ Number(netWorthData.total_networth_usd || 0);
       usd: t.usd_value ?? 0
     }));
 
-    const totalValue = topTokens.reduce((a, b) => a + b.usd, 0);
+    // ✅ Single declaration — from the net worth endpoint
+    const totalValue = Number(netWorthData.total_networth_usd || 0);
 
     const prompt = `
 You are a professional crypto wallet analyst.
