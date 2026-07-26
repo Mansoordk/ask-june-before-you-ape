@@ -10,23 +10,35 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: "Missing address in request body" });
     }
 
-    const balanceRes = await fetch(
-      `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
-      { headers: { "X-API-Key": process.env.MORALIS_API_KEY } }
-    );
+const [netWorthRes, tokenRes] = await Promise.all([
 
-    if (!balanceRes.ok) {
-      const errorBody = await balanceRes.text();
-      console.error(`Moralis returned ${balanceRes.status}: ${errorBody}`);
-      return res.status(502).json({
-        error: `Moralis API error (${balanceRes.status})`
-      });
+  fetch(
+    `https://deep-index.moralis.io/api/v2.2/wallets/${address}/net-worth?chains%5B0%5D=eth&exclude_spam=true`,
+    {
+      headers: {
+        "X-API-Key": process.env.MORALIS_API_KEY
+      }
     }
+  ),
 
-    const jsonData = await balanceRes.json();
-    console.log("Moralis response keys:", Object.keys(jsonData));
+  fetch(
+    `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=eth`,
+    {
+      headers: {
+        "X-API-Key": process.env.MORALIS_API_KEY
+      }
+    }
+  )
 
-    const tokens = jsonData?.result;
+]);
+
+const netWorthData = await netWorthRes.json();
+const tokenData = await tokenRes.json();
+
+const tokens = tokenData.result || [];
+
+const totalValue =
+Number(netWorthData.total_networth_usd || 0);
 
     if (!Array.isArray(tokens)) {
       console.error("Unexpected response:", JSON.stringify(jsonData).slice(0, 500));
